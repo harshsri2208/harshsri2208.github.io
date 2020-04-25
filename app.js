@@ -29,9 +29,14 @@ submitBtn.addEventListener('click', function() {
     email: userEmailInput,
     message: userMessageInput
   }).then(function(){
-    console.log("Data Saved");
+    //console.log("Data Saved");
+    window.alert("Message Sent");
+    window.close();
+    window.location.href = "index.html";
   })
   .catch(function(error) {
-    console.log(error);
+    //console.log(error);
+    window.alert("Could not send message");
+    window.close();
   });
 })
