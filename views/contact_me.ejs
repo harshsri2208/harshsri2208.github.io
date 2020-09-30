@@ -12,13 +12,13 @@
         <nav class="navbar navbar-dark bg-secondary">
             <a href="#" class="navbar-brand">Contact Form</a>
         </nav>
-        <div class="container mt-3 card card-body p-4">
+        <form class="container mt-3 card card-body p-4" action="/mail" method="POST">
             <h4 class="text-center">Contact Me</h4>
             <div class="form-group">
-              <label for="Name">Full Name</label> 
+              <label for="name">Full Name</label> 
               <input
                 type="text"
-                name="Full Name"
+                name="name"
                 id="userFullName"
                 class="form-control"
               />
@@ -27,17 +27,17 @@
                 <label for="Email">Email</label> 
                 <input
                   type="email"
-                  name="Email"
+                  name="email"
                   id="userEmail"
                   class="form-control"
                 />
             </div>
             <div class="form-group">
                 <label for="Message">Message</label> 
-                <textarea name="Message" id="userMessage" class="form-control"></textarea>
+                <textarea name="message" id="userMessage" class="form-control"></textarea>
             </div>
             <button id="submit" class="btn btn-secondary">Submit</button>
-        </div>
+          </form>
         <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-firestore.js"></script>
         <!--<script src="assets/js/app.js"></script>-->
