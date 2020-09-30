@@ -5,8 +5,8 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'coding.ayush@gmail.com',
-        pass: 'vjxlkmpjmcfcwfby'
+        user: 'your_mail@gmail.com',
+        pass: 'your_pass'
     }
 });
 
@@ -44,8 +44,8 @@ router.post('/mail', async(req, res) => {
     const email = req.body.email;
     const message = req.body.message;
     var mailOptions = {
-        from: 'Ayush Singh <coding.ayush@gmail.com>',
-        to: 'coding.ayush@gmail.com',
+        from: 'Firstname Lastname <yourmail@gmail.com>',
+        to: 'yourmail@gmail.com',
         subject: 'Notification from Portfolio Website | New Contact Request',
         text: `New message from ${name} <${email}>.\nHere's the message:\n\"${message}\"`
     };
