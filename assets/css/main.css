@@ -38,6 +38,10 @@ ol, ul {
 	list-style: none;
 }
 
+#briefInfo {
+	font-size: 20px;
+}
+
 .img_circle {
 	border-radius: 50%;
 }
