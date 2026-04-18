@@ -330,7 +330,7 @@ export default function App() {
                 </div>
               </div>
               <form 
-                action="https://formspree.io/f/placeholder" // The user will need to replace this with their actual Formspree ID
+                action="https://formspree.io/f/mnjlvjrp" // The user will need to replace this with their actual Formspree ID
                 method="POST"
                 onSubmit={async (e) => {
                   e.preventDefault();
