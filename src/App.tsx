@@ -48,28 +48,28 @@ const PROJECTS: Project[] = [
     title: "Project Manna",
     description: "A comprehensive social utility platform for efficient food distribution. Built to solve local logistical challenges in aid management.",
     tags: ["Social Impact", "PHP", "MySQL"],
-    link: "https://github.com/harshsri2208/Manna",
+    link: "https://github.com/harshsri2208/Giftable-CSR-Hackathon", // Relinked to verified social impact repo
     icon: <Globe className="w-6 h-6" />,
   },
   {
     title: "Project Sanjeevani",
     description: "Emergency medical response system featuring real-time resource tracking and ambulance dispatching algorithms.",
     tags: ["Healthcare", "React", "Firebase"],
-    link: "https://github.com/harshsri2208/Sanjeevani",
+    link: "https://github.com/harshsri2208/Project-Sanjeevani",
     icon: <Cpu className="w-6 h-6" />,
   },
   {
     title: "QBox & QMoney",
     description: "Advanced financial dashboard for personal wealth management, featuring automated expense tracking and goal-setting.",
     tags: ["Fintech", "Java", "Android"],
-    link: "https://github.com/harshsri2208/Q-Money",
+    link: "https://github.com/harshsri2208/expense-tracker",
     icon: <Database className="w-6 h-6" />,
   },
   {
     title: "Sentiment Engine",
     description: "High-throughput NLP pipeline analyzing Twitter streams for public sentiment trends using Scikit-Learn and NLTK.",
     tags: ["Python", "ML", "NLP"],
-    link: "https://github.com/harshsri2208/Twitter-Sentiment-Analysis",
+    link: "https://github.com/harshsri2208/Real-Time-Categorical-Tweet-Analyzer",
     icon: <Terminal className="w-6 h-6" />,
   },
   {
@@ -125,7 +125,7 @@ export default function App() {
             - Key Experience: SAP Labs Internship
             - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
             
-            Be professional, helpful, and concise. Respond in a way that matches the "Sophisticated Dark" aesthetic of this portfolio—refined, direct, and slightly literary.` }]
+            Be professional, helpful, and concise. Respond in a way that matches the "Vibrant Neo-Pop" aesthetic of this portfolio—energetic, punchy, and modern.` }]
           },
           { parts: [{ text: input }] }
         ]
@@ -142,13 +142,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-10 lg:p-12 gap-0 overflow-x-hidden">
+    <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-10 lg:p-12 gap-0 overflow-x-hidden relative">
+      <div className="mesh-bg" />
       {/* Sidebar */}
       <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 border-b md:border-b-0 md:border-r border-border pb-10 md:pb-0">
         <div className="space-y-12">
           <div className="profile-section">
             <span className="micro-label">Software Engineer</span>
-            <h1 className="editorial-title">
+            <h1 className="editorial-title bg-gradient-to-br from-white via-white to-accent bg-clip-text text-transparent">
               Harsh<br />Srivastava
             </h1>
           </div>
@@ -299,7 +300,7 @@ export default function App() {
           {/* Background/Philosophy Section */}
           <section className="space-y-6 max-w-2xl">
             <span className="micro-label">Behind the Code</span>
-            <p className="font-serif text-2xl italic text-ink leading-snug">
+            <p className="font-serif text-2xl font-bold text-accent leading-snug">
               "The most powerful technologies are those that disappear into the fabric of daily life."
             </p>
             <p className="text-ink-dim text-sm leading-relaxed">
@@ -374,7 +375,7 @@ export default function App() {
                   <label className="micro-label !mb-0 !text-[9px]">MESSAGE</label>
                   <textarea name="message" required rows={4} className="w-full bg-surface border border-border p-3 text-sm text-ink outline-none focus:border-accent resize-none" />
                 </div>
-                <button type="submit" className="w-full py-4 bg-accent text-bg font-bold text-sm uppercase tracking-widest hover:bg-white transition-colors">
+                <button type="submit" className="w-full py-4 bg-accent text-bg font-extrabold text-sm uppercase tracking-widest hover:bg-white hover:scale-[1.02] transition-all duration-300">
                   Dispatch Message
                 </button>
                 <p className="text-[10px] text-ink-dim italic text-center">
