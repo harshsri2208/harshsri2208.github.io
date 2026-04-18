@@ -115,20 +115,28 @@ export default function App() {
 
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+      
+      // Map history to the format expected by the API
+      const history = messages.map(m => ({
+        role: m.role === 'user' ? 'user' : 'model',
+        parts: [{ text: m.content }]
+      }));
+
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
-          {
-            parts: [{ text: `You are an AI assistant representing Harsh Srivastava. 
+          ...history,
+          { role: 'user', parts: [{ text: input }] }
+        ],
+        config: {
+          systemInstruction: `You are an AI assistant representing Harsh Srivastava. 
             Information about Harsh:
             - Projects: ${PROJECTS.map(p => p.title).join(', ')}
             - Key Experience: SAP Labs Internship
             - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
             
-            Be professional, helpful, and concise. Respond in a way that matches the "Vibrant Neo-Pop" aesthetic of this portfolio—energetic, punchy, and modern.` }]
-          },
-          { parts: [{ text: input }] }
-        ]
+            Be professional, helpful, and concise. Respond in a way that matches the "Vibrant Neo-Pop" aesthetic of this portfolio—energetic, punchy, and modern.`
+        }
       });
 
       const aiMessage: Message = { role: 'ai', content: response.text || "I apologize, but I am unable to respond at the moment." };
