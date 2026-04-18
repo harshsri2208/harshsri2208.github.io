@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --color-bg: #0D0D0D;
+  --color-surface: #141414;
+  --color-ink: #F2F2F2;
+  --color-ink-dim: #8C8C8C;
+  --color-accent: #D9C5B2;
+  --color-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-ink antialiased selection:bg-accent/30 selection:text-ink;
+    font-family: var(--font-sans);
+  }
+}
+
+.editorial-title {
+  @apply font-serif text-[56px] leading-[0.9] font-normal tracking-[-1px];
+}
+
+.editorial-nav-link {
+  @apply font-serif text-[20px] italic opacity-60 hover:opacity-100 transition-opacity;
+}
+
+.editorial-nav-link.active {
+  @apply opacity-100 border-b border-accent;
+}
+
+.micro-label {
+  @apply text-[11px] uppercase tracking-[2px] text-accent block mb-2;
+}
+
+.project-card {
+  @apply bg-surface p-8 border border-border relative;
+}
+
+.project-card h3 {
+  @apply font-serif text-2xl mb-3;
+}
+
+.exp-row {
+  @apply flex justify-between items-center py-4 border-b border-border;
+}
+
+.exp-company {
+  @apply font-serif text-lg;
+}
+
+.exp-year {
+  @apply font-serif italic text-accent;
+}
