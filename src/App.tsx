@@ -330,23 +330,32 @@ export default function App() {
                 </div>
               </div>
               <form 
+                action="https://formspree.io/f/placeholder" // The user will need to replace this with their actual Formspree ID
+                method="POST"
                 onSubmit={async (e) => {
                   e.preventDefault();
                   const form = e.currentTarget;
                   const formData = new FormData(form);
-                  const data = Object.fromEntries(formData.entries());
+                  
+                  // If they haven't configured a real endpoint yet, we show a friendly success message for the demo
+                  if (form.action.includes('placeholder')) {
+                    alert("Demo: In a live deployment, this would send a message to your email via Formspree! Please replace the placeholder ID in App.tsx with your own.");
+                    form.reset();
+                    return;
+                  }
+
                   try {
-                    const res = await fetch('/api/contact', {
+                    const res = await fetch(form.action, {
                       method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(data),
+                      body: formData,
+                      headers: { 'Accept': 'application/json' }
                     });
                     if (res.ok) {
                       alert("Message received! I'll get back to you soon.");
                       form.reset();
                     }
                   } catch (err) {
-                    alert("Something went wrong. Please try again.");
+                    alert("Something went wrong. Please check your internet connection and try again.");
                   }
                 }}
                 className="space-y-6"

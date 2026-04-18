@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 
@@ -16,24 +17,44 @@ async function startServer() {
   app.post('/api/contact', (req, res) => {
     const { name, email, message } = req.body;
     console.log(`New contact form submission from ${name} (${email}): ${message}`);
-    // In a production app, you'd send an email here using a service like SendGrid or Nodemailer
     res.json({ success: true, message: 'Message received! We will get back to you soon.' });
   });
 
+  let vite: any;
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
+    vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'custom', // Use custom to handle index.html ourselves
     });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
   }
+
+  // Handle all other requests by serving index.html
+  app.get('*', async (req, res, next) => {
+    const url = req.originalUrl;
+    try {
+      let template: string;
+      if (process.env.NODE_ENV !== 'production') {
+        // Read index.html from root
+        template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        // Apply Vite HTML transforms
+        template = await vite.transformIndexHtml(url, template);
+      } else {
+        // Read index.html from dist
+        template = fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html'), 'utf-8');
+      }
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+    } catch (e) {
+      if (process.env.NODE_ENV !== 'production') {
+        vite.ssrFixStacktrace(e);
+      }
+      next(e);
+    }
+  });
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
