@@ -1,6 +1,6 @@
-# Harsh Srivastava | Editorial Portfolio
+# Harsh Srivastava | Vibrant Neo-Pop Portfolio
 
-A high-end, sophisticated digital portfolio featuring an editorial design aesthetic, integrated AI assistance, and professional documentation.
+A high-energy, modern digital portfolio featuring a vibrant "Neo-Pop" aesthetic, integrated AI assistance, and professional documentation.
 
 ## 🚀 How This Site Was Made
 
@@ -16,13 +16,14 @@ This project was developed using **[Google AI Studio Build](https://ai.studio/bu
 
 ## ✨ Key Features
 
-### 1. Integrated AI Assistant
-The site features a custom-tuned AI representative that knows about my projects, skills, and background. It's designed to respond in an editorial, slightly literary tone that matches the portfolio's "Sophisticated Dark" aesthetic.
+### 1. Interactive AI Assistant
+The site features a custom-tuned AI representative that knows about my projects, skills, and background. It's designed to respond in an **energetic, punchy, and modern** tone that matches the portfolio's vibrant aesthetic.
 
-### 2. Sophisticated Dark Theme
-- **Typography**: A balanced pairing of *Playfair Display* (Serif) for headlines and *Inter* (Sans) for body text.
-- **Visual Style**: Minimalist borders, deep charcoal palettes (`#0D0D0D`), and refined beige accents (`#D9C5B2`).
-- **Layout**: A fixed navigational sidebar designed for a premium, editorial reading experience.
+### 2. Vibrant Neo-Pop Theme
+- **Typography**: Uses **Space Grotesk** for punchy, futuristic headers and **Inter** for clean, readable body text.
+- **Visual Style**: High-energy **Mesh Gradients** in the background with **Glassmorphism** (frosted glass) cards for a sophisticated yet vibrant feel.
+- **Accents**: Striking **Cyber Cyan** (`#00F0FF`) accents and gradient text for maximum visual impact.
+- **Responsiveness**: Mobile-first design with fluid typography and tap-optimized interactions.
 
 ### 3. Automated CI/CD
 The project uses **GitHub Actions** for automated deployment. Every push to the `main` branch triggers a workflow that:
@@ -32,6 +33,13 @@ The project uses **GitHub Actions** for automated deployment. Every push to the 
 
 ### 4. Functional Contact System
 Integrated with [Formspree](https://formspree.io/) to handle contact form submissions directly to my email without requiring a standalone backend server.
+
+### 5. Verified Project Links
+My selected works are linked directly to their respective verified repositories on GitHub, including:
+- **Project Manna** (Social Impact)
+- **Project Sanjeevani** (Healthcare Response)
+- **Sentiment Engine** (NLP Pipeline)
+- **SAP Labs Case Study** (Interview Documentation)
 
 ## 🛠️ Local Development
 
