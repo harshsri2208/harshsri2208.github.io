@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { 
   Github, 
   Linkedin, 
@@ -20,6 +20,122 @@ import {
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 import { cn } from './lib/utils';
+
+const MindBlowingBadge = () => {
+  const boundingRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isBlinking, setIsBlinking] = useState(false);
+  
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+  
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["20deg", "-20deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-20deg", "20deg"]);
+
+  // Parallax layers mapped to the local hover mouse
+  const bgX = useTransform(mouseXSpring, [-0.5, 0.5], [10, -10]);
+  const bgY = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
+  const fgX = useTransform(mouseXSpring, [-0.5, 0.5], [-15, 15]);
+  const fgY = useTransform(mouseYSpring, [-0.5, 0.5], [-15, 15]);
+
+  // Global mouse tracking for the pupil
+  useEffect(() => {
+    const handleGlobalMove = (e: MouseEvent) => {
+      if (!boundingRef.current) return;
+      const rect = boundingRef.current.getBoundingClientRect();
+      const eyeCenterX = rect.left + rect.width / 2;
+      const eyeCenterY = rect.top + rect.height / 2;
+      const dx = e.clientX - eyeCenterX;
+      const dy = e.clientY - eyeCenterY;
+      const angle = Math.atan2(dy, dx);
+      // Cap the distance the pupil can move from center
+      const dist = Math.min(Math.hypot(dx, dy) * 0.06, 14);
+      setMousePos({
+         x: Math.cos(angle) * dist,
+         y: Math.sin(angle) * dist
+      });
+    };
+    window.addEventListener('mousemove', handleGlobalMove);
+    return () => window.removeEventListener('mousemove', handleGlobalMove);
+  }, []);
+
+  // Chaotic comic book blinking pattern
+  useEffect(() => {
+     const blink = () => {
+         setIsBlinking(true);
+         setTimeout(() => setIsBlinking(false), 120);
+         setTimeout(blink, Math.random() * 4000 + 800);
+     };
+     const timer = setTimeout(blink, 1000);
+     return () => clearTimeout(timer);
+  }, []);
+
+  const handleMouseMoveLocal = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
+  };
+
+  const handleMouseLeaveLocal = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <div style={{ perspective: 1000 }} className="relative mb-8 group cursor-crosshair z-20 w-[144px] h-[144px] md:w-[192px] md:h-[192px]">
+        {/* Tilting highlight drop shadow layer */}
+        <div className="absolute -inset-2 bg-accent-yellow transform -rotate-3 cartoon-border rounded-[2rem] w-full h-full -z-10 group-hover:-rotate-6 transition-transform duration-300" />
+        
+        {/* Main 3D Card Window */}
+        <motion.div 
+           ref={boundingRef}
+           onMouseMove={handleMouseMoveLocal}
+           onMouseLeave={handleMouseLeaveLocal}
+           style={{ rotateX, rotateY }}
+           className="w-full h-full rounded-3xl cartoon-border bg-accent cartoon-shadow relative overflow-hidden flex items-center justify-center transition-shadow duration-300 group-hover:shadow-[12px_12px_0_var(--color-shadow)]"
+        >
+           {/* Deep Background - Moves Opposite */}
+           <motion.div 
+               style={{ x: bgX, y: bgY }}
+               className="absolute text-transparent inset-[-40%] opacity-40 bg-[radial-gradient(black_4px,transparent_4px)] [background-size:24px_24px]"
+           />
+
+           {/* The All-Seeing Eye */}
+           <div className="relative w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center border-[6px] border-black shadow-[inset_-6px_-6px_0_rgba(0,0,0,0.1)] overflow-hidden z-10 transition-transform duration-300 group-hover:scale-110">
+             {/* The Pupil */}
+             <motion.div 
+                animate={{ x: mousePos.x, y: mousePos.y }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="w-10 h-10 md:w-14 md:h-14 bg-black rounded-full shadow-[inset_-2px_-2px_0_#FFF] flex items-center justify-center relative"
+             >
+                {/* Anime/Comic Eye Glimmer */}
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-white rounded-full absolute top-1 right-2 md:top-2 md:right-3" />
+             </motion.div>
+
+             {/* Eyelid */}
+             <motion.div 
+                initial={{ height: "0%" }}
+                animate={{ height: isBlinking ? "100%" : "0%" }}
+                transition={{ duration: 0.1, ease: "easeIn" }}
+                className="absolute top-0 left-0 w-full bg-accent-blue border-b-[6px] border-black z-10"
+             />
+           </div>
+
+           {/* Hover Foreground Badge - Moves with Mouse */}
+           <motion.div
+             style={{ x: fgX, y: fgY }}
+             className="absolute bottom-2 right-2 bg-accent-yellow text-black font-black text-lg md:text-xl px-2 py-1 rotate-[-12deg] cartoon-border shadow-[4px_4px_0_#000] z-20"
+           >
+             A.I.
+           </motion.div>
+        </motion.div>
+    </div>
+  );
+};
 
 // Types
 interface Project {
@@ -158,16 +274,7 @@ export default function App() {
       {/* Sidebar */}
       <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 md:border-r-4 border-ink pb-10 md:pb-0 z-10">        <div className="space-y-12">
           <div className="profile-section flex flex-col items-start">
-            <div className="relative mb-8 group cursor-pointer inline-block">
-              {/* Highlight Backdrop */}
-              <div className="absolute -inset-2 bg-accent-yellow transform -rotate-3 cartoon-border rounded-[2rem] w-full h-full -z-10 group-hover:-rotate-6 transition-transform" />
-              {/* Image */}
-              <img 
-                src="/me.jpg" 
-                alt="Harsh Srivastava" 
-                className="w-36 h-36 md:w-48 md:h-48 object-cover rounded-3xl cartoon-border bg-surface cartoon-shadow transition-transform group-hover:-translate-y-1 group-hover:-translate-x-1 cartoon-image"
-              />
-            </div>
+            <MindBlowingBadge />
             
             <span className="micro-label bg-accent-blue text-black">Software Engineer</span>
             <h1 className="editorial-title">
