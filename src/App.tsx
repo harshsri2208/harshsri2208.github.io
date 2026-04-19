@@ -38,7 +38,7 @@ interface Message {
 // Data
 const PROJECTS: Project[] = [
   {
-    title: "SAP Labs Case Study",
+    title: "SAP Labs",
     description: "Detailed documentation of my on-campus internship interview experience and preparation journey at SAP Labs. Highlights competitive coding and system design patterns.",
     tags: ["SAP", "Interview", "System Design"],
     link: "https://harshsri2208.github.io",
@@ -146,7 +146,7 @@ export default function App() {
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error("Gemini Error:", error);
-      setMessages(prev => [...prev, { role: 'ai', content: "I encounter a connection issue. Please allow me a moment to recover." }]);
+      setMessages(prev => [...prev, { role: 'ai', content: "I encountered a connection issue. Please allow me a moment to recover." }]);
     } finally {
       setIsTyping(false);
     }
