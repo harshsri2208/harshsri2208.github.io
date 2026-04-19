@@ -59,6 +59,11 @@
     transform: translate(4px, 4px);
   }
 
+  .cartoon-image {
+    filter: contrast(1.4) saturate(1.8) brightness(1.1) sepia(0.2) hue-rotate(-5deg);
+    /* For extra crisp comic feel */
+  }
+
   .editorial-title {
     @apply font-serif text-[clamp(44px,8vw,80px)] leading-[1.1] font-bold tracking-tight text-ink;
     text-shadow: 4px 4px 0px var(--color-shadow);

@@ -157,7 +157,18 @@ export default function App() {
       {/* Background Pattern applied via base CSS */}
       {/* Sidebar */}
       <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 md:border-r-4 border-ink pb-10 md:pb-0 z-10">        <div className="space-y-12">
-          <div className="profile-section">
+          <div className="profile-section flex flex-col items-start">
+            <div className="relative mb-8 group cursor-pointer inline-block">
+              {/* Highlight Backdrop */}
+              <div className="absolute -inset-2 bg-accent-yellow transform -rotate-3 cartoon-border rounded-[2rem] w-full h-full -z-10 group-hover:-rotate-6 transition-transform" />
+              {/* Image */}
+              <img 
+                src="/me.jpg" 
+                alt="Harsh Srivastava" 
+                className="w-36 h-36 md:w-48 md:h-48 object-cover rounded-3xl cartoon-border bg-surface cartoon-shadow transition-transform group-hover:-translate-y-1 group-hover:-translate-x-1 cartoon-image"
+              />
+            </div>
+            
             <span className="micro-label bg-accent-blue text-black">Software Engineer</span>
             <h1 className="editorial-title">
               Harsh<br />Srivastava
@@ -165,7 +176,7 @@ export default function App() {
           </div>
 
           <div className="bio text-ink-dim text-lg font-bold leading-relaxed max-w-xs mt-6 bg-surface cartoon-border p-4 cartoon-shadow relative transform -rotate-2">
-            Crafting digital experiences through elegant code and intentional design. Currently focused on distributed systems and creative UI.
+            Crafting digital experiences through elegant code and intentional design. Currently focused on exploring AI and scalable apps.
           </div>
 
           <nav className="mt-8">
