@@ -28,8 +28,11 @@ The site features a custom-tuned AI representative that knows about my projects,
 ### 3. Automated CI/CD
 The project uses **GitHub Actions** for automated deployment. Every push to the `main` branch triggers a workflow that:
 - Installs dependencies.
-- Compiles the React application.
+- Injects the `GEMINI_API_KEY` from GitHub Secrets at build time for the AI assistant.
+- Compiles the React application using Vite.
 - Deploys the optimized static assets directly to **GitHub Pages**.
+
+> **Note for GitHub Pages Deployment**: To ensure the AI assistant functions on the live site, you must add your Gemini API key as a repository secret. Go to your GitHub repository -> **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**. Name it `GEMINI_API_KEY` and paste your key.
 
 ### 4. Functional Contact System
 Integrated with [Formspree](https://formspree.io/) to handle contact form submissions directly to my email without requiring a standalone backend server.
@@ -53,7 +56,15 @@ If you wish to run this project locally:
    ```bash
    npm install
    ```
-3. **Set up Environment Variables**: Create a `.env` file and add your Gemini API Key:
+3. **Set up Environment Variables**: Create a `.env` file and add your Gemini API Key. 
+
+   > **How to get a Gemini API Key:**
+   > 1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey).
+   > 2. Sign in with your Google account.
+   > 3. Click the **"Create API key"** button.
+   > 4. Create the key in a New Project or existing Google Cloud project.
+   > 5. Copy the generated key.
+
    ```env
    GEMINI_API_KEY=your_key_here
    ```

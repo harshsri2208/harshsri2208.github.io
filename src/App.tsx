@@ -117,10 +117,13 @@ export default function App() {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
       
       // Map history to the format expected by the API
-      const history = messages.map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.content }]
-      }));
+      // Filter out the initial greeting if it's the first message to ensure history starts with 'user'
+      const history = messages
+        .filter((_, i) => i > 0 || messages[0].role === 'user')
+        .map(m => ({
+          role: m.role === 'user' ? 'user' : 'model',
+          parts: [{ text: m.content }]
+        }));
 
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
