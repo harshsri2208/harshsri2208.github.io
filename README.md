@@ -19,11 +19,12 @@ This project was developed using **[Google AI Studio Build](https://ai.studio/bu
 ### 1. Interactive AI Assistant
 The site features a custom-tuned AI representative that knows about my projects, skills, and background. It's designed to respond in an **energetic, punchy, and modern** tone that matches the portfolio's vibrant aesthetic.
 
-### 2. Vibrant Neo-Pop Theme
-- **Typography**: Uses **Space Grotesk** for punchy, futuristic headers and **Inter** for clean, readable body text.
-- **Visual Style**: High-energy **Mesh Gradients** in the background with **Glassmorphism** (frosted glass) cards for a sophisticated yet vibrant feel.
-- **Accents**: Striking **Cyber Cyan** (`#00F0FF`) accents and gradient text for maximum visual impact.
+### 2. Cartoon Pop / Neo-Brutalist Theme
+- **Typography**: Uses **Fredoka** for punchy, fun, and rounded headers, and **Quicksand** for clean but approachable body text.
+- **Visual Style**: High-energy **Neo-Brutalism** featuring thick black outlines, stark contrast, and solid, hard-edged drop shadows instead of soft blurs.
+- **Accents**: Striking primary colors like **Vibrant Pink (`#FF3366`)**, **Electric Blue (`#00E5FF`)**, and **Flash Yellow (`#FFDE00`)** layered over a warm halftone-style dot background.
 - **Responsiveness**: Mobile-first design with fluid typography and tap-optimized interactions.
+- **AI Chatbot**: The AI assistant UI has been redesigned to look like an interactive comic book with directional speech bubbles.
 
 ### 3. Automated CI/CD
 The project uses **GitHub Actions** for automated deployment. Every push to the `main` branch triggers a workflow that:

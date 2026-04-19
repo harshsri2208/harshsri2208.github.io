@@ -138,7 +138,7 @@ export default function App() {
             - Key Experience: SAP Labs Internship
             - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
             
-            Be professional, helpful, and concise. Respond in a way that matches the "Vibrant Neo-Pop" aesthetic of this portfolio—energetic, punchy, and modern.`
+            Be fun, helpful, and concise. Respond in a way that matches the "Cartoon Pop / Neo-Brutalist" aesthetic of this portfolio—energetic, playful, and expressive like a comic book character!`
         }
       });
 
@@ -154,22 +154,21 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-10 lg:p-12 gap-0 overflow-x-hidden relative">
-      <div className="mesh-bg" />
+      {/* Background Pattern applied via base CSS */}
       {/* Sidebar */}
-      <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 border-b md:border-b-0 md:border-r border-border pb-10 md:pb-0">
-        <div className="space-y-12">
+      <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 md:border-r-4 border-ink pb-10 md:pb-0 z-10">        <div className="space-y-12">
           <div className="profile-section">
-            <span className="micro-label">Software Engineer</span>
-            <h1 className="editorial-title bg-gradient-to-br from-white via-white to-accent bg-clip-text text-transparent">
+            <span className="micro-label bg-accent-blue text-black">Software Engineer</span>
+            <h1 className="editorial-title">
               Harsh<br />Srivastava
             </h1>
           </div>
 
-          <div className="bio text-ink-dim text-sm leading-relaxed max-w-xs">
+          <div className="bio text-ink-dim text-lg font-bold leading-relaxed max-w-xs mt-6 bg-surface cartoon-border p-4 cartoon-shadow relative transform -rotate-2">
             Crafting digital experiences through elegant code and intentional design. Currently focused on distributed systems and creative UI.
           </div>
 
-          <nav>
+          <nav className="mt-8">
             <ul className="space-y-4">
               <li><a href="#projects" className="editorial-nav-link active">Selected Works</a></li>
               <li><a href="#about" className="editorial-nav-link">About Me</a></li>
@@ -181,9 +180,9 @@ export default function App() {
           </nav>
         </div>
 
-        <div className="mt-12 md:mt-0 flex flex-col gap-2 text-[12px] text-ink-dim uppercase tracking-wider">
+        <div className="mt-12 md:mt-0 flex flex-col gap-2 font-bold text-black bg-accent-yellow p-4 cartoon-border cartoon-shadow transform rotate-1">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500" />
+            <span className="w-3 h-3 rounded-full bg-accent-green cartoon-border" />
             Available for collaboration
           </div>
           <div>Based in Bangalore, India</div>
@@ -196,12 +195,12 @@ export default function App() {
           
           {/* Projects Section */}
           <section id="projects" className="space-y-8">
-            <div className="flex justify-between items-end border-b border-border pb-4">
-              <h2 className="font-serif text-3xl">Featured Projects</h2>
-              <span className="micro-label mb-0">01 &mdash; 06</span>
+            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+              <h2 className="font-serif text-4xl font-bold">Featured Projects</h2>
+              <span className="micro-label mb-0 bg-accent !text-white transform rotate-3">01 &mdash; 06</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {PROJECTS.map((project, idx) => (
                 <motion.div
                   key={project.title}
@@ -209,19 +208,19 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="project-card group"
+                  className="cartoon-card group hover:-translate-y-2 hover:-translate-x-2"
                 >
-                  <span className="micro-label">{project.tags[0] || "System"}</span>
-                  <h3 className="group-hover:text-accent transition-colors flex items-center justify-between">
+                  <span className="micro-label bg-accent-green text-black">{project.tags[0] || "System"}</span>
+                  <h3 className="group-hover:text-accent transition-colors flex items-center justify-between font-serif text-2xl font-bold mb-3 text-ink">
                     {project.title}
-                    {project.link && <a href={project.link} target="_blank" rel="noreferrer"><ExternalLink size={16} className="text-accent opacity-0 group-hover:opacity-100 transition-opacity" /></a>}
+                    {project.link && <a href={project.link} target="_blank" rel="noreferrer"><ExternalLink size={24} className="text-ink transition-transform group-hover:scale-125" /></a>}
                   </h3>
-                  <p className="text-ink-dim text-sm leading-relaxed mb-6 h-12 overflow-hidden line-clamp-2">
+                  <p className="text-ink-dim font-bold text-base leading-relaxed mb-6 h-12 overflow-hidden line-clamp-2">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.slice(1).map(tag => (
-                      <span key={tag} className="text-[10px] uppercase tracking-widest text-ink-dim px-2 py-1 border border-border">
+                      <span key={tag} className="text-[12px] uppercase tracking-widest text-ink font-bold px-3 py-1 bg-surface cartoon-border">
                         {tag}
                       </span>
                     ))}
@@ -233,12 +232,12 @@ export default function App() {
 
           {/* About Section */}
           <section id="about" className="space-y-12">
-            <div className="flex justify-between items-end border-b border-border pb-4">
-              <h2 className="font-serif text-3xl">About Me</h2>
-              <span className="micro-label mb-0">BIOGRAPHY</span>
+            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+              <h2 className="font-serif text-4xl font-bold">About Me</h2>
+              <span className="micro-label mb-0 bg-accent-blue text-black transform -rotate-3">BIOGRAPHY</span>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div className="space-y-6 text-ink-dim text-sm leading-relaxed">
+              <div className="space-y-6 text-ink-dim text-base font-bold leading-relaxed cartoon-card bg-surface">
                 <p>
                   I am a Software Engineer based in India, driven by the intersection of complex backends and intuitive interfaces. My journey started with a fascination for automation, which led me to build tools that simplify human interaction with technology.
                 </p>
@@ -246,16 +245,16 @@ export default function App() {
                   With a solid foundation in Computer Science, I've had the privilege of working with organizations like SAP Labs, where I honed my skills in enterprise-grade software development. My aspirations lie in architecting scalable distributed systems that empower global communities.
                 </p>
                 <div className="pt-4 grid grid-cols-2 gap-4">
-                  <div>
-                    <span className="micro-label !text-[9px]">AWARDS</span>
-                    <ul className="mt-2 space-y-1 text-ink">
+                  <div className="bg-accent-yellow p-4 cartoon-border transform rotate-1">
+                    <span className="micro-label !text-[10px] bg-surface text-ink">AWARDS</span>
+                    <ul className="mt-2 text-black font-bold text-sm">
                       <li>• SAP Excellence Intern</li>
                       <li>• Hackathon Winner 2023</li>
                     </ul>
                   </div>
-                  <div>
-                    <span className="micro-label !text-[9px]">EDUCATION</span>
-                    <ul className="mt-2 space-y-1 text-ink">
+                  <div className="bg-accent p-4 cartoon-border transform -rotate-1 text-black">
+                    <span className="micro-label !text-[10px] bg-surface text-ink">EDUCATION</span>
+                    <ul className="mt-2 font-bold text-sm">
                       <li>• B.Tech, Computer Science</li>
                       <li>• Specialization in AI/ML</li>
                     </ul>
@@ -263,12 +262,12 @@ export default function App() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
-                {SKILLS.map(skill => (
-                  <div key={skill.name} className="space-y-3">
-                    <span className="micro-label !text-accent">{skill.name}</span>
+                {SKILLS.map((skill, idx) => (
+                  <div key={skill.name} className={`cartoon-card p-6 flex flex-col gap-3 ${idx % 2 === 0 ? 'bg-accent-blue' : 'bg-surface'}`}>
+                    <span className={`font-serif text-2xl font-bold ${idx % 2 === 0 ? 'text-black' : 'text-ink'}`}>{skill.name}</span>
                     <div className="flex flex-wrap gap-2">
                       {skill.items.map(i => (
-                        <span key={i} className="text-[10px] text-ink font-mono">{i}</span>
+                        <span key={i} className="text-sm text-ink font-bold bg-surface cartoon-border px-2 py-1">{i}</span>
                       ))}
                     </div>
                   </div>
@@ -279,65 +278,65 @@ export default function App() {
 
           {/* Experience Section */}
           <section className="space-y-8">
-            <div className="flex justify-between items-end border-b border-border pb-4">
-              <h2 className="font-serif text-3xl">Experience</h2>
+            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+              <h2 className="font-serif text-4xl font-bold">Experience</h2>
             </div>
             
-            <div className="space-y-0">
-              <div className="exp-row">
+            <div className="space-y-0 cartoon-card bg-surface p-0">
+              <div className="exp-row px-8">
                 <div>
                   <div className="exp-company">SAP Labs</div>
-                  <div className="exp-role text-ink-dim text-sm">Case Study & Internship Prep</div>
+                  <div className="exp-role text-ink-dim font-bold text-base">Case Study & Internship Prep</div>
                 </div>
                 <div className="exp-year">2024 &mdash; Pres.</div>
               </div>
-              <div className="exp-row">
+              <div className="exp-row px-8 bg-accent-green">
                 <div>
-                  <div className="exp-company">PyWarriors Community</div>
-                  <div className="exp-role text-ink-dim text-sm">Lead Developer</div>
+                  <div className="exp-company text-black">PyWarriors Community</div>
+                  <div className="exp-role text-black text-base font-bold">Lead Developer</div>
                 </div>
-                <div className="exp-year">2023 &mdash; 2024</div>
+                <div className="exp-year !text-black">2023 &mdash; 2024</div>
               </div>
-              <div className="exp-row border-none">
+              <div className="exp-row px-8 border-none bg-accent-yellow">
                 <div>
-                  <div className="exp-company">Software Engineering Projects</div>
-                  <div className="exp-role text-ink-dim text-sm">Full Stack Development</div>
+                  <div className="exp-company text-black">Software Engineering Projects</div>
+                  <div className="exp-role text-black font-bold text-base">Full Stack Development</div>
                 </div>
-                <div className="exp-year">2022 &mdash; 2023</div>
+                <div className="exp-year !text-black">2022 &mdash; 2023</div>
               </div>
             </div>
           </section>
 
           {/* Background/Philosophy Section */}
-          <section className="space-y-6 max-w-2xl">
-            <span className="micro-label">Behind the Code</span>
-            <p className="font-serif text-2xl font-bold text-accent leading-snug">
+          <section className="space-y-6 max-w-2xl cartoon-card bg-accent text-white">
+            <span className="micro-label bg-surface text-ink">Behind the Code</span>
+            <p className="font-serif text-3xl font-bold leading-snug">
               "The most powerful technologies are those that disappear into the fabric of daily life."
             </p>
-            <p className="text-ink-dim text-sm leading-relaxed">
+            <p className="text-white text-base font-bold leading-relaxed">
               I believe in software that is as beautiful internally as it is externally. My approach combines the rigor of engineering with the nuance of design, ensuring that every line of code serves a larger narrative.
             </p>
           </section>
 
           {/* Contact Section */}
           <section id="contact" className="space-y-12">
-            <div className="flex justify-between items-end border-b border-border pb-4">
-              <h2 className="font-serif text-3xl">Get in Touch</h2>
-              <span className="micro-label mb-0">CONTACT</span>
+            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+              <h2 className="font-serif text-4xl font-bold">Get in Touch</h2>
+              <span className="micro-label mb-0 bg-accent-yellow text-black">CONTACT</span>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div className="space-y-6">
-                <p className="text-ink-dim text-sm leading-relaxed">
+              <div className="space-y-6 cartoon-card bg-accent-blue">
+                <p className="text-black text-lg font-bold leading-relaxed">
                   Whether you have a question about my work or just want to say hello, my inbox is always open. Feel free to reach out via the form, or connect through social channels.
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4 text-ink">
-                    <Mail size={18} className="text-accent" />
-                    <span className="text-sm">harshsri2208@gmail.com</span>
+                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                    <Mail size={24} className="text-accent" />
+                    <span>harshsri2208@gmail.com</span>
                   </div>
-                  <div className="flex items-center gap-4 text-ink">
-                    <Globe size={18} className="text-accent" />
-                    <span className="text-sm">Bangalore, India</span>
+                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                    <Globe size={24} className="text-accent" />
+                    <span>Bangalore, India</span>
                   </div>
                 </div>
               </div>
@@ -370,26 +369,26 @@ export default function App() {
                     alert("Something went wrong. Please check your internet connection and try again.");
                   }
                 }}
-                className="space-y-6"
+                className="space-y-6 cartoon-card bg-surface"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="micro-label !mb-0 !text-[9px]">NAME</label>
-                    <input name="name" required className="w-full bg-surface border border-border p-3 text-sm text-ink outline-none focus:border-accent" />
+                    <label className="micro-label !text-[10px] bg-accent text-white">NAME</label>
+                    <input name="name" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
                   </div>
                   <div className="space-y-2">
-                    <label className="micro-label !mb-0 !text-[9px]">EMAIL</label>
-                    <input name="email" type="email" required className="w-full bg-surface border border-border p-3 text-sm text-ink outline-none focus:border-accent" />
+                    <label className="micro-label !text-[10px] bg-accent text-white">EMAIL</label>
+                    <input name="email" type="email" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="micro-label !mb-0 !text-[9px]">MESSAGE</label>
-                  <textarea name="message" required rows={4} className="w-full bg-surface border border-border p-3 text-sm text-ink outline-none focus:border-accent resize-none" />
+                  <label className="micro-label !text-[10px] bg-accent text-white">MESSAGE</label>
+                  <textarea name="message" required rows={4} className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl resize-none" />
                 </div>
-                <button type="submit" className="w-full py-4 bg-accent text-bg font-extrabold text-sm uppercase tracking-widest hover:bg-white hover:scale-[1.02] transition-all duration-300">
+                <button type="submit" className="cartoon-button w-full bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-xl">
                   Dispatch Message
                 </button>
-                <p className="text-[10px] text-ink-dim italic text-center">
+                <p className="text-sm text-ink-dim font-bold italic text-center">
                   This form uses a secure serverless integration to forward messages to my primary address.
                 </p>
               </form>
@@ -397,13 +396,13 @@ export default function App() {
           </section>
 
           {/* Footer */}
-          <footer className="pt-20 pb-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-border">
+          <footer className="pt-20 pb-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t-4 border-ink mt-20">
             <div className="flex gap-8">
-              <a href="https://github.com/harshsri2208" className="text-ink-dim hover:text-accent transition-colors uppercase tracking-widest text-[10px] font-bold">Github</a>
-              <a href="https://linkedin.com/in/harshsri2208" className="text-ink-dim hover:text-accent transition-colors uppercase tracking-widest text-[10px] font-bold">Linkedin</a>
-              <a href="mailto:harshsri2208@gmail.com" className="text-ink-dim hover:text-accent transition-colors uppercase tracking-widest text-[10px] font-bold">Email</a>
+              <a href="https://github.com/harshsri2208" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Github</a>
+              <a href="https://linkedin.com/in/harshsri2208" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Linkedin</a>
+              <a href="mailto:harshsri2208@gmail.com" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Email</a>
             </div>
-            <p className="text-[10px] text-ink-dim uppercase tracking-[3px]">
+            <p className="text-sm text-black uppercase font-bold tracking-[2px] bg-accent-yellow px-4 py-2 cartoon-border rounded-full transform rotate-2">
               &copy; 2026 Harsh Srivastava
             </p>
           </footer>
@@ -426,66 +425,66 @@ export default function App() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-surface border-l border-border z-[70] flex flex-col"
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-surface border-l-4 border-ink z-[70] flex flex-col shadow-[-10px_0px_0px_var(--color-shadow)]"
             >
-              <div className="p-8 border-b border-border flex items-center justify-between">
+              <div className="p-8 border-b-4 border-ink flex items-center justify-between bg-accent-yellow">
                 <div className="flex flex-col">
-                  <span className="micro-label mb-1">Interactive Assistant</span>
-                  <h3 className="font-serif text-xl">Harsh AI</h3>
+                  <span className="micro-label mb-1 bg-surface text-ink">Interactive Assistant</span>
+                  <h3 className="font-serif text-3xl font-bold text-black">Harsh AI</h3>
                 </div>
                 <button 
                   onClick={() => setIsChatOpen(false)}
-                  className="p-2 rounded-full hover:bg-white/5 text-ink-dim hover:text-ink transition-all"
+                  className="bg-surface rounded-full p-2 cartoon-border cartoon-shadow hover:translate-y-1 hover:shadow-none transition-all"
                 >
-                  <X size={20} />
+                  <X size={24} className="text-ink" />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide">
+              <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide bg-bg">
                 {messages.map((m, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
                     className={cn(
-                      "flex flex-col max-w-[90%]",
+                      "flex flex-col max-w-[85%]",
                       m.role === 'user' ? "ml-auto items-end" : "items-start"
                     )}
                   >
                     <div className={cn(
-                      "text-sm leading-relaxed p-4 border",
+                      "speech-bubble font-bold text-base leading-relaxed",
                       m.role === 'user' 
-                        ? "bg-accent/10 border-accent/20 text-accent" 
-                        : "bg-bg/50 border-border text-ink-dim"
+                        ? "user-msg" 
+                        : "ai-msg"
                     )}>
                       {m.content}
                     </div>
                   </motion.div>
                 ))}
                 {isTyping && (
-                  <div className="flex gap-2 text-accent animate-pulse ml-2">
-                    <span className="text-[10px] uppercase tracking-widest italic">Consulting the model...</span>
+                  <div className="flex gap-2 text-accent font-bold animate-bounce ml-6">
+                    <span className="text-sm uppercase tracking-widest italic bg-surface cartoon-border px-4 py-2 rounded-full text-ink">Thinking...</span>
                   </div>
                 )}
                 <div ref={chatEndRef} />
               </div>
 
-              <div className="p-8 border-t border-border">
-                <div className="relative">
+              <div className="p-6 border-t-4 border-ink bg-surface">
+                <div className="relative flex items-center">
                   <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                    placeholder="Ask a technical question..."
-                    className="w-full bg-bg border border-border px-5 py-4 text-sm text-ink focus:outline-none focus:border-accent/50 transition-all font-serif italic"
+                    placeholder="Ask me anything..."
+                    className="w-full bg-surface cartoon-border px-5 py-4 rounded-full text-lg font-bold text-ink focus:outline-none focus:bg-bg transition-colors"
                   />
                   <button 
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isTyping}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-accent disabled:opacity-30 transition-all"
+                    className="absolute right-2 cartoon-button !px-4 !py-3 !rounded-full bg-accent text-white disabled:opacity-50"
                   >
-                    <Send size={18} />
+                    <Send size={20} />
                   </button>
                 </div>
               </div>
