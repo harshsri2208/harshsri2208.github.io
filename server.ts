@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
+import { getTerminalPortfolio } from './src/terminalTemplate.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +13,15 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Terminal/SSH detection middleware for curl
+  app.use((req, res, next) => {
+    const userAgent = req.headers['user-agent'] || '';
+    if (userAgent.toLowerCase().includes('curl')) {
+      return res.send(getTerminalPortfolio());
+    }
+    next();
+  });
 
   // API Routes
   app.post('/api/contact', (req, res) => {

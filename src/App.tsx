@@ -16,7 +16,10 @@ import {
   Database,
   Cloud,
   Layout,
-  Briefcase
+  Briefcase,
+  Monitor,
+  Copy,
+  Check
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 import { cn } from './lib/utils';
@@ -206,6 +209,8 @@ const SKILLS = [
 
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [copiedCurl, setCopiedCurl] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'ai', content: "Hi! I'm Harsh's AI assistant. Ask me anything about his projects, experience, or skills!" }
   ]);
@@ -292,6 +297,7 @@ export default function App() {
               <li><a href="#about" className="editorial-nav-link">About Me</a></li>
               <li><a href="#contact" className="editorial-nav-link">Contact</a></li>
               <li><button onClick={() => setIsChatOpen(true)} className="editorial-nav-link text-left">Ask AI Assistant</button></li>
+              <li><button onClick={() => setIsTerminalOpen(true)} className="editorial-nav-link text-left flex items-center gap-2">SSH / Curl Tools <span className="inline-block py-0.5 px-1.5 bg-accent-yellow text-black text-[10px] rounded cartoon-border">NEW</span></button></li>
               <li><a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">LinkedIn</a></li>
               <li><a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">GitHub</a></li>
             </ul>
@@ -605,6 +611,98 @@ export default function App() {
                     <Send size={20} />
                   </button>
                 </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Terminal Modal */}
+      <AnimatePresence>
+        {isTerminalOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsTerminalOpen(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-surface cartoon-border cartoon-shadow z-[101] p-8 md:p-12 overflow-hidden mx-4"
+            >
+              <button 
+                onClick={() => setIsTerminalOpen(false)}
+                className="absolute top-6 right-6 p-2 bg-accent text-white rounded-full cartoon-border hover:bg-accent/80 transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-accent-yellow rounded-2xl cartoon-border shadow-[4px_4px_0_#000]">
+                  <Monitor size={32} className="text-black" />
+                </div>
+                <div>
+                  <h2 className="editorial-subtitle text-3xl mb-1">Terminal Mode</h2>
+                  <p className="text-ink-dim font-bold">Access the portfolio via CLI</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                {/* Curl Box */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-accent-blue text-black flex items-center justify-center text-sm cartoon-border">1</span>
+                    Via Curl (Instant)
+                  </h3>
+                  <div className="bg-bg cartoon-border p-4 relative group">
+                    <code className="text-accent-blue font-mono text-sm md:text-base break-all">
+                      curl -L {window.location.host}
+                    </code>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(`curl -L ${window.location.host}`);
+                        setCopiedCurl(true);
+                        setTimeout(() => setCopiedCurl(false), 2000);
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-surface cartoon-border hover:bg-bg transition-colors"
+                    >
+                      {copiedCurl ? <Check size={16} className="text-accent-green" /> : <Copy size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* SSH Box */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-accent-green text-black flex items-center justify-center text-sm cartoon-border">2</span>
+                    Via SSH (Standalone)
+                  </h3>
+                  <div className="bg-bg cartoon-border p-6 space-y-4">
+                    <p className="text-ink-dim text-sm font-bold leading-relaxed">
+                      GitHub Pages is static and doesn't support SSH. However, I've built a custom SSH server! You can download and run it ourselves, or point it to a VPS.
+                    </p>
+                    <div className="flex gap-4">
+                      <a 
+                        href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="cartoon-button bg-accent text-white !py-2 !text-base flex items-center gap-2"
+                      >
+                        <Terminal size={18} /> View SSH Source
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-12 text-center">
+                <p className="text-accent-yellow font-black uppercase tracking-widest text-sm">
+                  Power User Feature Engaged
+                </p>
               </div>
             </motion.div>
           </>
