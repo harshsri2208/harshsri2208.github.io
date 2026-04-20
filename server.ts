@@ -17,7 +17,8 @@ async function startServer() {
   // Terminal/SSH detection middleware for curl
   app.use((req, res, next) => {
     const userAgent = req.headers['user-agent'] || '';
-    if (userAgent.toLowerCase().includes('curl')) {
+    if (userAgent.toLowerCase().includes('curl') || req.query.cli === 'true') {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       return res.send(getTerminalPortfolio());
     }
     next();

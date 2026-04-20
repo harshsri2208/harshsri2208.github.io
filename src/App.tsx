@@ -140,6 +140,68 @@ const MindBlowingBadge = () => {
   );
 };
 
+const TerminalPreview = () => {
+  return (
+    <div className="bg-[#0c0c0c] cartoon-border p-4 md:p-6 font-mono text-[10px] md:text-xs leading-none overflow-x-auto select-none">
+      <div className="text-[#38BDF8]">╔═════════════════════════════════════════════════════════════════════════╗</div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ██╗  ██╗ █████╗ ██████╗ ███████╗██╗  ██╗                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ██║  ██║██╔══██╗██╔══██╗██╔════╝██║  ██║                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ███████║███████║██████╔╝███████╗███████║                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ██╔══██║██╔══██║██╔══██╗╚════██║██╔══██║                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ██║  ██║██║  ██║██║  ██║███████║██║  ██║                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <pre className="text-[#FF3366] leading-none">   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝                        </pre>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex">
+        <span className="text-[#38BDF8]">║</span>
+        <span className="flex-1" />
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="flex px-4 items-center">
+        <span className="text-[#38BDF8]">║</span>
+        <span className="flex-1 text-[#FFD600] font-black">   SRIVASTAVA <span className="text-white">|</span> <span className="text-[#00E5FF]">Software Engineer</span></span>
+        <span className="text-[#38BDF8]">║</span>
+      </div>
+      <div className="text-[#38BDF8]">╚═════════════════════════════════════════════════════════════════════════╝</div>
+      
+      <div className="mt-4 text-[#00E5FF]">── ABOUT ───────────────────────────────────────────────────────────────────</div>
+      <div className="text-white mt-1">Crafting digital experiences through elegant code and intentional design.</div>
+      <div className="text-white">Currently focused on exploring AI and scalable apps.</div>
+
+      <div className="mt-4 text-[#00E5FF]">── CONNECT ─────────────────────────────────────────────────────────────────</div>
+      <div className="text-[#38BDF8]">• GitHub:   <span className="text-white">https://github.com/harshsri2208</span></div>
+      <div className="text-[#38BDF8]">• LinkedIn: <span className="text-white">https://www.linkedin.com/in/harsh-srivastava-harshsri2208/</span></div>
+      
+      <div className="mt-4 flex items-center gap-2">
+        <span className="text-[#00E676] font-bold text-xs uppercase px-1.5 py-0.5 bg-[#00E676]/20 rounded border border-[#00E676]/30">Live Terminal Mode</span>
+        <span className="text-gray-500 text-[10px]">Ready to receive connections...</span>
+      </div>
+    </div>
+  );
+};
+
 // Types
 interface Project {
   title: string;
@@ -632,7 +694,7 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-surface cartoon-border cartoon-shadow z-[101] p-8 md:p-12 overflow-hidden mx-4"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-surface cartoon-border cartoon-shadow z-[101] p-6 md:p-10 overflow-y-auto max-h-[90vh] mx-4"
             >
               <button 
                 onClick={() => setIsTerminalOpen(false)}
@@ -651,58 +713,65 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="space-y-8">
-                {/* Curl Box */}
-                <div>
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-full bg-accent-blue text-black flex items-center justify-center text-sm cartoon-border">1</span>
-                    Via Curl (Instant)
-                  </h3>
-                  <div className="bg-bg cartoon-border p-4 relative group">
-                    <code className="text-accent-blue font-mono text-sm md:text-base break-all">
-                      curl -L {window.location.host}
-                    </code>
-                    <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText(`curl -L ${window.location.host}`);
-                        setCopiedCurl(true);
-                        setTimeout(() => setCopiedCurl(false), 2000);
-                      }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-surface cartoon-border hover:bg-bg transition-colors"
-                    >
-                      {copiedCurl ? <Check size={16} className="text-accent-green" /> : <Copy size={16} />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* SSH Box */}
-                <div>
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-full bg-accent-green text-black flex items-center justify-center text-sm cartoon-border">2</span>
-                    Via SSH (Standalone)
-                  </h3>
-                  <div className="bg-bg cartoon-border p-6 space-y-4">
-                    <p className="text-ink-dim text-sm font-bold leading-relaxed">
-                      GitHub Pages is static and doesn't support SSH. However, I've built a custom SSH server! You can download and run it ourselves, or point it to a VPS.
-                    </p>
-                    <div className="flex gap-4">
-                      <a 
-                        href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="cartoon-button bg-accent text-white !py-2 !text-base flex items-center gap-2"
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-8">
+                  {/* Curl Box */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full bg-accent-blue text-black flex items-center justify-center text-sm cartoon-border">1</span>
+                      Via Curl
+                    </h3>
+                    <div className="bg-bg cartoon-border p-4 relative group mb-4">
+                      <code className="text-accent-blue font-mono text-sm break-all">
+                        curl -L {window.location.host}
+                      </code>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(`curl -L ${window.location.host}`);
+                          setCopiedCurl(true);
+                          setTimeout(() => setCopiedCurl(false), 2000);
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-surface cartoon-border hover:bg-bg transition-colors"
                       >
-                        <Terminal size={18} /> View SSH Source
-                      </a>
+                        {copiedCurl ? <Check size={16} className="text-accent-green" /> : <Copy size={16} />}
+                      </button>
+                    </div>
+                    <div className="bg-accent-yellow/10 cartoon-border border-accent-yellow p-4 text-xs font-bold text-accent-yellow leading-relaxed">
+                      ⚠️ Sandbox Note: AI Studio's "Cookie Check" might block curl. This command works perfectly once you host this app on Render, Railway, or VPS!
+                    </div>
+                  </div>
+
+                  {/* SSH Box */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full bg-accent-green text-black flex items-center justify-center text-sm cartoon-border">2</span>
+                      Via SSH
+                    </h3>
+                    <div className="bg-bg cartoon-border p-6 space-y-4">
+                      <p className="text-ink-dim text-sm font-bold leading-relaxed">
+                        GitHub Pages is static. To enable real SSH, you can run the provided server code on any VPS.
+                      </p>
+                      <div className="flex gap-4">
+                        <a 
+                          href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="cartoon-button bg-bg text-white !py-2 !px-4 !text-sm flex items-center gap-2"
+                        >
+                          <Terminal size={14} /> Get SSH Server Source
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-12 text-center">
-                <p className="text-accent-yellow font-black uppercase tracking-widest text-sm">
-                  Power User Feature Engaged
-                </p>
+                {/* Live Preview */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-tighter">
+                    Live UI Preview
+                  </h3>
+                  <TerminalPreview />
+                </div>
               </div>
             </motion.div>
           </>
