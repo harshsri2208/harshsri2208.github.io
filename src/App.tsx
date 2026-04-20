@@ -21,7 +21,6 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { GoogleGenAI } from "@google/genai";
 import { cn } from './lib/utils';
 
 const MindBlowingBadge = () => {
@@ -297,8 +296,6 @@ export default function App() {
     setIsTyping(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-      
       // Map history to the format expected by the API
       // Filter out the initial greeting if it's the first message to ensure history starts with 'user'
       const history = messages
@@ -308,27 +305,34 @@ export default function App() {
           parts: [{ text: m.content }]
         }));
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          ...history,
-          { role: 'user', parts: [{ text: input }] }
-        ],
-        config: {
-          systemInstruction: `You are an AI assistant representing Harsh Srivastava. 
-            Information about Harsh:
-            - Projects: ${PROJECTS.map(p => p.title).join(', ')}
-            - Key Experience: SAP Labs Internship
-            - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
-            
-            Be fun, helpful, and concise. Respond in a way that matches the "Cartoon Pop / Neo-Brutalist" aesthetic of this portfolio—energetic, playful, and expressive like a comic book character!`
-        }
+      const systemInstruction = `You are an AI assistant representing Harsh Srivastava. 
+        Information about Harsh:
+        - Projects: ${PROJECTS.map(p => p.title).join(', ')}
+        - Key Experience: SAP Labs Internship
+        - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
+        
+        Be fun, helpful, and concise. Respond in a way that matches the "Cartoon Pop / Neo-Brutalist" aesthetic of this portfolio—energetic, playful, and expressive like a comic book character!`;
+
+      // Call our secure backend server instead of exposing the API key to the client browser
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          history,
+          input,
+          systemInstruction
+        })
       });
 
-      const aiMessage: Message = { role: 'ai', content: response.text || "I apologize, but I am unable to respond at the moment." };
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+
+      const data = await response.json();
+      const aiMessage: Message = { role: 'ai', content: data.text || "I apologize, but I am unable to respond at the moment." };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error("Gemini Error:", error);
+      console.error("Chat Server Error:", error);
       setMessages(prev => [...prev, { role: 'ai', content: "I encountered a connection issue. Please allow me a moment to recover." }]);
     } finally {
       setIsTyping(false);
