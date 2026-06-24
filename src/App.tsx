@@ -324,16 +324,18 @@ export default function App() {
         })
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(data.error || `Server responded with ${response.status}`);
       }
 
-      const data = await response.json();
       const aiMessage: Message = { role: 'ai', content: data.text || "I apologize, but I am unable to respond at the moment." };
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error("Chat Server Error:", error);
-      setMessages(prev => [...prev, { role: 'ai', content: "I encountered a connection issue. Please allow me a moment to recover." }]);
+      const errorMessage = error instanceof Error ? error.message : "I encountered a connection issue. Please allow me a moment to recover.";
+      setMessages(prev => [...prev, { role: 'ai', content: errorMessage }]);
     } finally {
       setIsTyping(false);
     }

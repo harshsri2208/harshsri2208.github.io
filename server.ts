@@ -16,6 +16,10 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  // Trust proxy is required when running behind a reverse proxy (like Cloud Run or AI Studio)
+  // This prevents express-rate-limit from throwing ValidationError about X-Forwarded-For headers
+  app.set('trust proxy', 1);
+
   // Security Middlewares
   app.use(helmet({
     contentSecurityPolicy: false // Disabled for Vite HMR and inline styles in dev
@@ -92,8 +96,14 @@ async function startServer() {
       });
 
       res.json({ text: response.text });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Backend Gemini Error:", error);
+      
+      // Check if it's an invalid API key error from Gemini
+      if (error?.status === 'INVALID_ARGUMENT' || error?.message?.includes('API key not valid')) {
+        return res.status(500).json({ error: "Invalid API Key. Please configure a valid Gemini API Key in the Settings menu." });
+      }
+
       res.status(500).json({ error: "I encountered a connection issue. Please allow me a moment to recover." });
     }
   });
