@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import { 
   Github, 
   Linkedin, 
-  Mail, 
   ExternalLink, 
   Code2, 
   Cpu, 
@@ -363,7 +362,6 @@ export default function App() {
             <ul className="space-y-4">
               <li><a href="#projects" className="editorial-nav-link active">Selected Works</a></li>
               <li><a href="#about" className="editorial-nav-link">About Me</a></li>
-              <li><a href="#contact" className="editorial-nav-link">Contact</a></li>
               <li><button onClick={() => setIsChatOpen(true)} className="editorial-nav-link text-left">Ask AI Assistant</button></li>
               <li><button onClick={() => setIsTerminalOpen(true)} className="editorial-nav-link text-left flex items-center gap-2">SSH / Curl Tools <span className="inline-block py-0.5 px-1.5 bg-accent-yellow text-black text-[10px] rounded cartoon-border">NEW</span></button></li>
               <li><a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">LinkedIn</a></li>
@@ -508,83 +506,6 @@ export default function App() {
             <p className="text-white text-base font-bold leading-relaxed">
               I believe in software that is as beautiful internally as it is externally. My approach combines the rigor of engineering with the nuance of design, ensuring that every line of code serves a larger narrative.
             </p>
-          </section>
-
-          {/* Contact Section */}
-          <section id="contact" className="space-y-12">
-            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
-              <h2 className="font-serif text-4xl font-bold">Get in Touch</h2>
-              <span className="micro-label mb-0 bg-accent-yellow text-black">CONTACT</span>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div className="space-y-6 cartoon-card bg-accent-blue">
-                <p className="text-black text-lg font-bold leading-relaxed">
-                  Whether you have a question about my work or just want to say hello, my inbox is always open. Feel free to reach out via the form, or connect through social channels.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
-                    <Mail size={24} className="text-accent" />
-                    <span>harshsri2208@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
-                    <Globe size={24} className="text-accent" />
-                    <span>Bangalore, India</span>
-                  </div>
-                </div>
-              </div>
-              <form 
-                action="https://formspree.io/f/mnjlvjrp" // The user will need to replace this with their actual Formspree ID
-                method="POST"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const form = e.currentTarget;
-                  const formData = new FormData(form);
-                  
-                  // If they haven't configured a real endpoint yet, we show a friendly success message for the demo
-                  if (form.action.includes('placeholder')) {
-                    alert("Demo: In a live deployment, this would send a message to your email via Formspree! Please replace the placeholder ID in App.tsx with your own.");
-                    form.reset();
-                    return;
-                  }
-
-                  try {
-                    const res = await fetch(form.action, {
-                      method: 'POST',
-                      body: formData,
-                      headers: { 'Accept': 'application/json' }
-                    });
-                    if (res.ok) {
-                      alert("Message received! I'll get back to you soon.");
-                      form.reset();
-                    }
-                  } catch (err) {
-                    alert("Something went wrong. Please check your internet connection and try again.");
-                  }
-                }}
-                className="space-y-6 cartoon-card bg-surface"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="micro-label !text-[10px] bg-accent text-white">NAME</label>
-                    <input name="name" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="micro-label !text-[10px] bg-accent text-white">EMAIL</label>
-                    <input name="email" type="email" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="micro-label !text-[10px] bg-accent text-white">MESSAGE</label>
-                  <textarea name="message" required rows={4} className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl resize-none" />
-                </div>
-                <button type="submit" className="cartoon-button w-full bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-xl">
-                  Dispatch Message
-                </button>
-                <p className="text-sm text-ink-dim font-bold italic text-center">
-                  This form uses a secure serverless integration to forward messages to my primary address.
-                </p>
-              </form>
-            </div>
           </section>
 
           {/* Footer */}

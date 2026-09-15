@@ -56,21 +56,6 @@ async function startServer() {
   });
 
   // API Routes
-  app.post('/api/contact', (req, res) => {
-    const { name, email, message } = req.body;
-    
-    // Basic Input Validation
-    if (!name || !email || !message) {
-      return res.status(400).json({ success: false, message: 'All fields are required.' });
-    }
-    
-    // Sanitization: Escape basic HTML to prevent XSS if this was rendered elsewhere
-    const sanitize = (str: string) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    
-    console.log(`New contact form submission from ${sanitize(name)} (${sanitize(email)}): ${sanitize(message)}`);
-    res.json({ success: true, message: 'Message received! We will get back to you soon.' });
-  });
-
   // Secure Backend Chat Endpoint (Moves Gemini API key off the client)
   app.post('/api/chat', chatLimiter, async (req, res) => {
     try {
