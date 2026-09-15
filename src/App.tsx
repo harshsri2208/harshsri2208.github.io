@@ -8,6 +8,7 @@ import {
   Cpu, 
   Globe, 
   MessageSquare, 
+  Mail,
   Send, 
   X, 
   ChevronRight,
@@ -217,45 +218,45 @@ interface Message {
 // Data
 const PROJECTS: Project[] = [
   {
-    title: "SAP Labs",
-    description: "Detailed documentation of my on-campus internship interview experience and preparation journey at SAP Labs. Highlights competitive coding and system design patterns.",
-    tags: ["SAP", "Interview", "System Design"],
-    link: "https://harshsri2208.github.io",
-    icon: <Briefcase className="w-6 h-6" />,
-  },
-  {
-    title: "Project Manna",
-    description: "A comprehensive social utility platform for efficient food distribution. Built to solve local logistical challenges in aid management.",
-    tags: ["Social Impact", "PHP", "MySQL"],
-    link: "https://github.com/harshsri2208/Giftable-CSR-Hackathon", // Relinked to verified social impact repo
-    icon: <Globe className="w-6 h-6" />,
-  },
-  {
-    title: "Project Sanjeevani",
-    description: "Emergency medical response system featuring real-time resource tracking and ambulance dispatching algorithms.",
-    tags: ["Healthcare", "React", "Firebase"],
-    link: "https://github.com/harshsri2208/Project-Sanjeevani",
+    title: "AnomalyDetection_CVPR18",
+    description: "Implementation of Real-World Anomaly Detection CVPR_2018 paper. Built utilizing advanced computer vision concepts.",
+    tags: ["Computer Vision", "Machine Learning", "Research"],
+    link: "https://github.com/harshsri2208/AnomalyDetection_CVPR18",
     icon: <Cpu className="w-6 h-6" />,
   },
   {
-    title: "QBox & QMoney",
-    description: "Advanced financial dashboard for personal wealth management, featuring automated expense tracking and goal-setting.",
-    tags: ["Fintech", "Java", "Android"],
+    title: "Expense Tracker",
+    description: "Expense tracking app using Spring Boot for the robust backend and React for the dynamic frontend interface.",
+    tags: ["React", "Spring Boot", "Full-Stack"],
     link: "https://github.com/harshsri2208/expense-tracker",
     icon: <Database className="w-6 h-6" />,
   },
   {
-    title: "Sentiment Engine",
-    description: "High-throughput NLP pipeline analyzing Twitter streams for public sentiment trends using Scikit-Learn and NLTK.",
-    tags: ["Python", "ML", "NLP"],
-    link: "https://github.com/harshsri2208/Real-Time-Categorical-Tweet-Analyzer",
+    title: "Giftable-CSR-Hackathon",
+    description: "Coin classifier utilizing React for UI and Django for the backend, built as part of a CSR hackathon.",
+    tags: ["Python", "Django", "React"],
+    link: "https://github.com/harshsri2208/Giftable-CSR-Hackathon",
+    icon: <Globe className="w-6 h-6" />,
+  },
+  {
+    title: "Cab Management",
+    description: "Database management system project built in Java to efficiently handle cab booking and dispatching routes.",
+    tags: ["Java", "DBMS", "Software Engineering"],
+    link: "https://github.com/harshsri2208/cab-management",
+    icon: <Briefcase className="w-6 h-6" />,
+  },
+  {
+    title: "File Backup Automation",
+    description: "Linux based shell automation script for streamlining robust file backup operations on local and remote servers.",
+    tags: ["Linux", "Shell Scripting", "DevOps"],
+    link: "https://github.com/harshsri2208/file-backup-automation",
     icon: <Terminal className="w-6 h-6" />,
   },
   {
-    title: "PyWarriors Community",
-    description: "An educational hub for Python enthusiasts, reaching thousands of learners through structured tutorials and communal code reviews.",
-    tags: ["Education", "Python", "Community"],
-    link: "https://pywarriors.com",
+    title: "ChatApp",
+    description: "Java-based chatting application focusing on real-time client-server communication and socket programming.",
+    tags: ["Java", "Networking", "Sockets"],
+    link: "https://github.com/harshsri2208/ChatApp",
     icon: <Code2 className="w-6 h-6" />,
   }
 ];
@@ -268,77 +269,8 @@ const SKILLS = [
 ];
 
 export default function App() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [copiedCurl, setCopiedCurl] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', content: "Hi! I'm Harsh's AI assistant. Ask me anything about his projects, experience, or skills!" }
-  ]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSendMessage = async () => {
-    if (!input.trim()) return;
-
-    const userMessage: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsTyping(true);
-
-    try {
-      // Map history to the format expected by the API
-      // Filter out the initial greeting if it's the first message to ensure history starts with 'user'
-      const history = messages
-        .filter((_, i) => i > 0 || messages[0].role === 'user')
-        .map(m => ({
-          role: m.role === 'user' ? 'user' : 'model',
-          parts: [{ text: m.content }]
-        }));
-
-      const systemInstruction = `You are an AI assistant representing Harsh Srivastava. 
-        Information about Harsh:
-        - Projects: ${PROJECTS.map(p => p.title).join(', ')}
-        - Key Experience: SAP Labs Internship
-        - Skills: ${SKILLS.map(s => s.items.join(', ')).join(', ')}
-        
-        Be fun, helpful, and concise. Respond in a way that matches the "Cartoon Pop / Neo-Brutalist" aesthetic of this portfolio—energetic, playful, and expressive like a comic book character!`;
-
-      // Call our secure backend server instead of exposing the API key to the client browser
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          history,
-          input,
-          systemInstruction
-        })
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || `Server responded with ${response.status}`);
-      }
-
-      const aiMessage: Message = { role: 'ai', content: data.text || "I apologize, but I am unable to respond at the moment." };
-      setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
-      console.error("Chat Server Error:", error);
-      const errorMessage = error instanceof Error ? error.message : "I encountered a connection issue. Please allow me a moment to recover.";
-      setMessages(prev => [...prev, { role: 'ai', content: errorMessage }]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-10 lg:p-12 gap-0 overflow-x-hidden relative">
@@ -362,7 +294,8 @@ export default function App() {
             <ul className="space-y-4">
               <li><a href="#projects" className="editorial-nav-link active">Selected Works</a></li>
               <li><a href="#about" className="editorial-nav-link">About Me</a></li>
-              <li><button onClick={() => setIsChatOpen(true)} className="editorial-nav-link text-left">Ask AI Assistant</button></li>
+              <li><a href="#contact" className="editorial-nav-link">Contact</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="editorial-nav-link flex items-center gap-2">Download Resume <span className="inline-block py-0.5 px-1.5 bg-accent-blue text-black text-[10px] rounded cartoon-border">PDF</span></a></li>
               <li><button onClick={() => setIsTerminalOpen(true)} className="editorial-nav-link text-left flex items-center gap-2">SSH / Curl Tools <span className="inline-block py-0.5 px-1.5 bg-accent-yellow text-black text-[10px] rounded cartoon-border">NEW</span></button></li>
               <li><a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">LinkedIn</a></li>
               <li><a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">GitHub</a></li>
@@ -450,6 +383,12 @@ export default function App() {
                     </ul>
                   </div>
                 </div>
+                <div className="pt-2">
+                  <a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="cartoon-button bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-lg w-full text-center flex items-center justify-center gap-2">
+                    <ExternalLink size={20} />
+                    Download Official Resume
+                  </a>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 {SKILLS.map((skill, idx) => (
@@ -497,7 +436,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* Background/Philosophy Section */}
+          {/* Behind the Code Section */}
           <section className="space-y-6 max-w-2xl cartoon-card bg-accent text-white">
             <span className="micro-label bg-surface text-ink">Behind the Code</span>
             <p className="font-serif text-3xl font-bold leading-snug">
@@ -506,6 +445,83 @@ export default function App() {
             <p className="text-white text-base font-bold leading-relaxed">
               I believe in software that is as beautiful internally as it is externally. My approach combines the rigor of engineering with the nuance of design, ensuring that every line of code serves a larger narrative.
             </p>
+          </section>
+
+          {/* Contact Section */}
+          <section id="contact" className="space-y-12">
+            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+              <h2 className="font-serif text-4xl font-bold">Get in Touch</h2>
+              <span className="micro-label mb-0 bg-accent-yellow text-black">CONTACT</span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="space-y-6 cartoon-card bg-accent-blue">
+                <p className="text-black text-lg font-bold leading-relaxed">
+                  Whether you have a question about my work or just want to say hello, my inbox is always open. Feel free to reach out via the form, or connect through social channels.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                    <Mail size={24} className="text-accent" />
+                    <span>harshsri2208@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                    <Globe size={24} className="text-accent" />
+                    <span>Bangalore, India</span>
+                  </div>
+                </div>
+              </div>
+              <form 
+                action="https://formspree.io/f/mnjlvjrp" // The user will need to replace this with their actual Formspree ID
+                method="POST"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const formData = new FormData(form);
+                  
+                  // If they haven't configured a real endpoint yet, we show a friendly success message for the demo
+                  if (form.action.includes('placeholder')) {
+                    alert("Demo: In a live deployment, this would send a message to your email via Formspree! Please replace the placeholder ID in App.tsx with your own.");
+                    form.reset();
+                    return;
+                  }
+
+                  try {
+                    const res = await fetch(form.action, {
+                      method: 'POST',
+                      body: formData,
+                      headers: { 'Accept': 'application/json' }
+                    });
+                    if (res.ok) {
+                      alert("Message received! I'll get back to you soon.");
+                      form.reset();
+                    }
+                  } catch (err) {
+                    alert("Something went wrong. Please check your internet connection and try again.");
+                  }
+                }}
+                className="space-y-6 cartoon-card bg-surface"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="micro-label !text-[10px] bg-accent text-white">NAME</label>
+                    <input name="name" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="micro-label !text-[10px] bg-accent text-white">EMAIL</label>
+                    <input name="email" type="email" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="micro-label !text-[10px] bg-accent text-white">MESSAGE</label>
+                  <textarea name="message" required rows={4} className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl resize-none" />
+                </div>
+                <button type="submit" className="cartoon-button w-full bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-xl">
+                  Dispatch Message
+                </button>
+                <p className="text-sm text-ink-dim font-bold italic text-center">
+                  This form uses a secure serverless integration to forward messages to my primary address.
+                </p>
+              </form>
+            </div>
           </section>
 
           {/* Footer */}
@@ -521,90 +537,6 @@ export default function App() {
           </footer>
         </div>
       </main>
-
-      {/* AI Chat Drawer - Theme Adjusted */}
-      <AnimatePresence>
-        {isChatOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsChatOpen(false)}
-              className="fixed inset-0 bg-bg/80 backdrop-blur-sm z-[60]"
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-surface border-l-4 border-ink z-[70] flex flex-col shadow-[-10px_0px_0px_var(--color-shadow)]"
-            >
-              <div className="p-8 border-b-4 border-ink flex items-center justify-between bg-accent-yellow">
-                <div className="flex flex-col">
-                  <span className="micro-label mb-1 bg-surface text-ink">Interactive Assistant</span>
-                  <h3 className="font-serif text-3xl font-bold text-black">Harsh AI</h3>
-                </div>
-                <button 
-                  onClick={() => setIsChatOpen(false)}
-                  className="bg-surface rounded-full p-2 cartoon-border cartoon-shadow hover:translate-y-1 hover:shadow-none transition-all"
-                >
-                  <X size={24} className="text-ink" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-8 space-y-8 scrollbar-hide bg-bg">
-                {messages.map((m, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    className={cn(
-                      "flex flex-col max-w-[85%]",
-                      m.role === 'user' ? "ml-auto items-end" : "items-start"
-                    )}
-                  >
-                    <div className={cn(
-                      "speech-bubble font-bold text-base leading-relaxed",
-                      m.role === 'user' 
-                        ? "user-msg" 
-                        : "ai-msg"
-                    )}>
-                      {m.content}
-                    </div>
-                  </motion.div>
-                ))}
-                {isTyping && (
-                  <div className="flex gap-2 text-accent font-bold animate-bounce ml-6">
-                    <span className="text-sm uppercase tracking-widest italic bg-surface cartoon-border px-4 py-2 rounded-full text-ink">Thinking...</span>
-                  </div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
-
-              <div className="p-6 border-t-4 border-ink bg-surface">
-                <div className="relative flex items-center">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                    placeholder="Ask me anything..."
-                    className="w-full bg-surface cartoon-border px-5 py-4 rounded-full text-lg font-bold text-ink focus:outline-none focus:bg-bg transition-colors"
-                  />
-                  <button 
-                    onClick={handleSendMessage}
-                    disabled={!input.trim() || isTyping}
-                    className="absolute right-2 cartoon-button !px-4 !py-3 !rounded-full bg-accent text-white disabled:opacity-50"
-                  >
-                    <Send size={20} />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       {/* Terminal Modal */}
       <AnimatePresence>

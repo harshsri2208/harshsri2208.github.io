@@ -7,7 +7,6 @@ import { getTerminalPortfolio } from './src/terminalTemplate.js';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
-import { GoogleGenAI } from '@google/genai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,41 +55,19 @@ async function startServer() {
   });
 
   // API Routes
-  // Secure Backend Chat Endpoint (Moves Gemini API key off the client)
-  app.post('/api/chat', chatLimiter, async (req, res) => {
-    try {
-      const { history, input, systemInstruction } = req.body;
-
-      if (!input || typeof input !== 'string') {
-        return res.status(400).json({ error: "Invalid input" });
-      }
-
-      if (!process.env.GEMINI_API_KEY) {
-        console.error("Missing GEMINI_API_KEY environment variable.");
-        return res.status(500).json({ error: "AI service is currently unavailable. Please try again later." });
-      }
-
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          ...(history || []),
-          { role: 'user', parts: [{ text: input.substring(0, 500) }] } // Cap input length
-        ],
-        config: { systemInstruction }
-      });
-
-      res.json({ text: response.text });
-    } catch (error: any) {
-      console.error("Backend Gemini Error:", error);
-      
-      // Check if it's an invalid API key error from Gemini
-      if (error?.status === 'INVALID_ARGUMENT' || error?.message?.includes('API key not valid')) {
-        return res.status(500).json({ error: "Invalid API Key. Please configure a valid Gemini API Key in the Settings menu." });
-      }
-
-      res.status(500).json({ error: "I encountered a connection issue. Please allow me a moment to recover." });
+  app.post('/api/contact', (req, res) => {
+    const { name, email, message } = req.body;
+    
+    // Basic Input Validation
+    if (!name || !email || !message) {
+      return res.status(400).json({ success: false, message: 'All fields are required.' });
     }
+    
+    // Sanitization: Escape basic HTML to prevent XSS if this was rendered elsewhere
+    const sanitize = (str: string) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    
+    console.log(`New contact form submission from ${sanitize(name)} (${sanitize(email)}): ${sanitize(message)}`);
+    res.json({ success: true, message: 'Message received! We will get back to you soon.' });
   });
 
   let vite: any;
