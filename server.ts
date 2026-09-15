@@ -62,6 +62,12 @@ async function startServer() {
     if (!name || !email || !message) {
       return res.status(400).json({ success: false, message: 'All fields are required.' });
     }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
+    }
     
     // Sanitization: Escape basic HTML to prevent XSS if this was rendered elsewhere
     const sanitize = (str: string) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");

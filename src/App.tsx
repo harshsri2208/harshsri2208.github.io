@@ -1,219 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Github, 
   Linkedin, 
+  Mail, 
   ExternalLink, 
   Code2, 
   Cpu, 
   Globe, 
-  MessageSquare, 
-  Mail,
-  Send, 
-  X, 
-  ChevronRight,
-  Terminal,
   Database,
-  Cloud,
-  Layout,
+  Terminal,
   Briefcase,
   Monitor,
+  X,
   Copy,
-  Check
+  Check,
+  Download
 } from 'lucide-react';
-import { cn } from './lib/utils';
-
-const MindBlowingBadge = () => {
-  const boundingRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isBlinking, setIsBlinking] = useState(false);
-  
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
-  
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["20deg", "-20deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-20deg", "20deg"]);
-
-  // Parallax layers mapped to the local hover mouse
-  const bgX = useTransform(mouseXSpring, [-0.5, 0.5], [10, -10]);
-  const bgY = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
-  const fgX = useTransform(mouseXSpring, [-0.5, 0.5], [-15, 15]);
-  const fgY = useTransform(mouseYSpring, [-0.5, 0.5], [-15, 15]);
-
-  // Global mouse tracking for the pupil
-  useEffect(() => {
-    const handleGlobalMove = (e: MouseEvent) => {
-      if (!boundingRef.current) return;
-      const rect = boundingRef.current.getBoundingClientRect();
-      const eyeCenterX = rect.left + rect.width / 2;
-      const eyeCenterY = rect.top + rect.height / 2;
-      const dx = e.clientX - eyeCenterX;
-      const dy = e.clientY - eyeCenterY;
-      const angle = Math.atan2(dy, dx);
-      // Cap the distance the pupil can move from center
-      const dist = Math.min(Math.hypot(dx, dy) * 0.06, 14);
-      setMousePos({
-         x: Math.cos(angle) * dist,
-         y: Math.sin(angle) * dist
-      });
-    };
-    window.addEventListener('mousemove', handleGlobalMove);
-    return () => window.removeEventListener('mousemove', handleGlobalMove);
-  }, []);
-
-  // Chaotic comic book blinking pattern
-  useEffect(() => {
-     const blink = () => {
-         setIsBlinking(true);
-         setTimeout(() => setIsBlinking(false), 120);
-         setTimeout(blink, Math.random() * 4000 + 800);
-     };
-     const timer = setTimeout(blink, 1000);
-     return () => clearTimeout(timer);
-  }, []);
-
-  const handleMouseMoveLocal = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / rect.width - 0.5);
-    y.set(mouseY / rect.height - 0.5);
-  };
-
-  const handleMouseLeaveLocal = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <div style={{ perspective: 1000 }} className="relative mb-8 group cursor-crosshair z-20 w-[144px] h-[144px] md:w-[192px] md:h-[192px]">
-        {/* Tilting highlight drop shadow layer */}
-        <div className="absolute -inset-2 bg-accent-yellow transform -rotate-3 cartoon-border rounded-[2rem] w-full h-full -z-10 group-hover:-rotate-6 transition-transform duration-300" />
-        
-        {/* Main 3D Card Window */}
-        <motion.div 
-           ref={boundingRef}
-           onMouseMove={handleMouseMoveLocal}
-           onMouseLeave={handleMouseLeaveLocal}
-           style={{ rotateX, rotateY }}
-           className="w-full h-full rounded-3xl cartoon-border bg-accent cartoon-shadow relative overflow-hidden flex items-center justify-center transition-shadow duration-300 group-hover:shadow-[12px_12px_0_var(--color-shadow)]"
-        >
-           {/* Deep Background - Moves Opposite */}
-           <motion.div 
-               style={{ x: bgX, y: bgY }}
-               className="absolute text-transparent inset-[-40%] opacity-40 bg-[radial-gradient(black_4px,transparent_4px)] [background-size:24px_24px]"
-           />
-
-           {/* The All-Seeing Eye */}
-           <div className="relative w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center border-[6px] border-black shadow-[inset_-6px_-6px_0_rgba(0,0,0,0.1)] overflow-hidden z-10 transition-transform duration-300 group-hover:scale-110">
-             {/* The Pupil */}
-             <motion.div 
-                animate={{ x: mousePos.x, y: mousePos.y }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="w-10 h-10 md:w-14 md:h-14 bg-black rounded-full shadow-[inset_-2px_-2px_0_#FFF] flex items-center justify-center relative"
-             >
-                {/* Anime/Comic Eye Glimmer */}
-                <div className="w-3 h-3 md:w-4 md:h-4 bg-white rounded-full absolute top-1 right-2 md:top-2 md:right-3" />
-             </motion.div>
-
-             {/* Eyelid */}
-             <motion.div 
-                initial={{ height: "0%" }}
-                animate={{ height: isBlinking ? "100%" : "0%" }}
-                transition={{ duration: 0.1, ease: "easeIn" }}
-                className="absolute top-0 left-0 w-full bg-accent-blue border-b-[6px] border-black z-10"
-             />
-           </div>
-
-           {/* Hover Foreground Badge - Moves with Mouse */}
-           <motion.div
-             style={{ x: fgX, y: fgY }}
-             className="absolute bottom-2 right-2 bg-accent-yellow text-black font-black text-lg md:text-xl px-2 py-1 rotate-[-12deg] cartoon-border shadow-[4px_4px_0_#000] z-20"
-           >
-             A.I.
-           </motion.div>
-        </motion.div>
-    </div>
-  );
-};
-
-const TerminalPreview = () => {
-  return (
-    <div className="bg-[#0c0c0c] cartoon-border p-4 md:p-6 font-mono text-[10px] md:text-xs leading-none overflow-x-auto select-none">
-      <div className="text-[#38BDF8]">╔═════════════════════════════════════════════════════════════════════════╗</div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ██╗  ██╗ █████╗ ██████╗ ███████╗██╗  ██╗                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ██║  ██║██╔══██╗██╔══██╗██╔════╝██║  ██║                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ███████║███████║██████╔╝███████╗███████║                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ██╔══██║██╔══██║██╔══██╗╚════██║██╔══██║                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ██║  ██║██║  ██║██║  ██║███████║██║  ██║                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <pre className="text-[#FF3366] leading-none">   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝                        </pre>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex">
-        <span className="text-[#38BDF8]">║</span>
-        <span className="flex-1" />
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="flex px-4 items-center">
-        <span className="text-[#38BDF8]">║</span>
-        <span className="flex-1 text-[#FFD600] font-black">   SRIVASTAVA <span className="text-white">|</span> <span className="text-[#00E5FF]">Software Engineer</span></span>
-        <span className="text-[#38BDF8]">║</span>
-      </div>
-      <div className="text-[#38BDF8]">╚═════════════════════════════════════════════════════════════════════════╝</div>
-      
-      <div className="mt-4 text-[#00E5FF]">── ABOUT ───────────────────────────────────────────────────────────────────</div>
-      <div className="text-white mt-1">Crafting digital experiences through elegant code and intentional design.</div>
-      <div className="text-white">Currently focused on exploring AI and scalable apps.</div>
-
-      <div className="mt-4 text-[#00E5FF]">── CONNECT ─────────────────────────────────────────────────────────────────</div>
-      <div className="text-[#38BDF8]">• GitHub:   <span className="text-white">https://github.com/harshsri2208</span></div>
-      <div className="text-[#38BDF8]">• LinkedIn: <span className="text-white">https://www.linkedin.com/in/harsh-srivastava-harshsri2208/</span></div>
-      
-      <div className="mt-4 flex items-center gap-2">
-        <span className="text-[#00E676] font-bold text-xs uppercase px-1.5 py-0.5 bg-[#00E676]/20 rounded border border-[#00E676]/30">Live Terminal Mode</span>
-        <span className="text-gray-500 text-[10px]">Ready to receive connections...</span>
-      </div>
-    </div>
-  );
-};
+import { cn } from './lib/utils'; // wait, does this exist? If not I'll remove cn or define it
 
 // Types
-interface Project {
+type Project = {
   title: string;
   description: string;
   tags: string[];
   link?: string;
-  icon: React.ReactNode;
-}
-
-interface Message {
-  role: 'user' | 'ai';
-  content: string;
-}
+  icon?: React.ReactNode;
+};
 
 // Data
 const PROJECTS: Project[] = [
@@ -222,320 +35,263 @@ const PROJECTS: Project[] = [
     description: "Implementation of Real-World Anomaly Detection CVPR_2018 paper. Built utilizing advanced computer vision concepts.",
     tags: ["Computer Vision", "Machine Learning", "Research"],
     link: "https://github.com/harshsri2208/AnomalyDetection_CVPR18",
-    icon: <Cpu className="w-6 h-6" />,
+    icon: <Cpu className="w-5 h-5" />,
   },
   {
     title: "Expense Tracker",
     description: "Expense tracking app using Spring Boot for the robust backend and React for the dynamic frontend interface.",
     tags: ["React", "Spring Boot", "Full-Stack"],
     link: "https://github.com/harshsri2208/expense-tracker",
-    icon: <Database className="w-6 h-6" />,
+    icon: <Database className="w-5 h-5" />,
   },
   {
     title: "Giftable-CSR-Hackathon",
     description: "Coin classifier utilizing React for UI and Django for the backend, built as part of a CSR hackathon.",
     tags: ["Python", "Django", "React"],
     link: "https://github.com/harshsri2208/Giftable-CSR-Hackathon",
-    icon: <Globe className="w-6 h-6" />,
+    icon: <Globe className="w-5 h-5" />,
   },
   {
     title: "Cab Management",
     description: "Database management system project built in Java to efficiently handle cab booking and dispatching routes.",
     tags: ["Java", "DBMS", "Software Engineering"],
     link: "https://github.com/harshsri2208/cab-management",
-    icon: <Briefcase className="w-6 h-6" />,
+    icon: <Briefcase className="w-5 h-5" />,
   },
   {
     title: "File Backup Automation",
     description: "Linux based shell automation script for streamlining robust file backup operations on local and remote servers.",
     tags: ["Linux", "Shell Scripting", "DevOps"],
     link: "https://github.com/harshsri2208/file-backup-automation",
-    icon: <Terminal className="w-6 h-6" />,
+    icon: <Terminal className="w-5 h-5" />,
   },
   {
     title: "ChatApp",
     description: "Java-based chatting application focusing on real-time client-server communication and socket programming.",
     tags: ["Java", "Networking", "Sockets"],
     link: "https://github.com/harshsri2208/ChatApp",
-    icon: <Code2 className="w-6 h-6" />,
+    icon: <Code2 className="w-5 h-5" />,
   }
 ];
 
 const SKILLS = [
-  { name: "Frontend", items: ["React", "TypeScript", "Tailwind", "Next.js"] },
-  { name: "Backend", items: ["Node.js", "Express", "Python", "Java"] },
-  { name: "Cloud/DevOps", items: ["Firebase", "AWS", "Docker", "Git"] },
-  { name: "ML/Data", items: ["Scikit-Learn", "NLP", "Pandas", "Scraping"] },
+  { name: "Languages", items: ["Python", "Java", "TypeScript", "JavaScript", "C++", "SQL"] },
+  { name: "Frontend", items: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Redux"] },
+  { name: "Backend", items: ["Node.js", "Express", "Spring Boot", "Django", "REST APIs"] },
+  { name: "Tools & ML", items: ["Git/GitHub", "Docker", "Linux", "Scikit-Learn", "TensorFlow"] }
 ];
+
+const Avatar = () => (
+  <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+    <img 
+      src="https://api.dicebear.com/7.x/notionists/svg?seed=Harsh&backgroundColor=e2e8f0" 
+      alt="Harsh Srivastava" 
+      className="w-full h-full object-cover" 
+    />
+  </div>
+);
 
 export default function App() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [copiedCurl, setCopiedCurl] = useState(false);
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-10 lg:p-12 gap-0 overflow-x-hidden relative">
-      {/* Background Pattern applied via base CSS */}
-      {/* Sidebar */}
-      <aside className="w-full md:w-80 lg:w-96 flex flex-col justify-between md:pr-10 lg:pr-12 md:border-r-4 border-ink pb-10 md:pb-0 z-10">        <div className="space-y-12">
-          <div className="profile-section flex flex-col items-start">
-            <MindBlowingBadge />
-            
-            <span className="micro-label bg-accent-blue text-black">Software Engineer</span>
-            <h1 className="editorial-title">
-              Harsh<br />Srivastava
-            </h1>
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col md:flex-row p-6 md:p-12 lg:p-20 gap-12 max-w-[1600px] mx-auto">
+      {/* Sidebar Navigation */}
+      <aside className="w-full md:w-64 lg:w-80 flex flex-col justify-between shrink-0 h-fit sticky top-20">
+        <div className="space-y-12">
+          <div className="profile-section flex flex-col items-start gap-6">
+            <Avatar />
+            <div>
+              <h1 className="font-serif text-4xl font-bold tracking-tight text-gray-900 mb-2">Harsh Srivastava</h1>
+              <p className="font-sans text-lg font-medium text-blue-600">Software Engineer</p>
+            </div>
           </div>
-
-          <div className="bio text-ink-dim text-lg font-bold leading-relaxed max-w-xs mt-6 bg-surface cartoon-border p-4 cartoon-shadow relative transform -rotate-2">
-            Crafting digital experiences through elegant code and intentional design. Currently focused on exploring AI and scalable apps.
-          </div>
-
-          <nav className="mt-8">
+          
+          <nav className="hidden md:block">
             <ul className="space-y-4">
-              <li><a href="#projects" className="editorial-nav-link active">Selected Works</a></li>
-              <li><a href="#about" className="editorial-nav-link">About Me</a></li>
-              <li><a href="#contact" className="editorial-nav-link">Contact</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="editorial-nav-link flex items-center gap-2">Download Resume <span className="inline-block py-0.5 px-1.5 bg-accent-blue text-black text-[10px] rounded cartoon-border">PDF</span></a></li>
-              <li><button onClick={() => setIsTerminalOpen(true)} className="editorial-nav-link text-left flex items-center gap-2">SSH / Curl Tools <span className="inline-block py-0.5 px-1.5 bg-accent-yellow text-black text-[10px] rounded cartoon-border">NEW</span></button></li>
-              <li><a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">LinkedIn</a></li>
-              <li><a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">GitHub</a></li>
+              <li><a href="#about" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">About Me</a></li>
+              <li><a href="#projects" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">Selected Works</a></li>
+              <li><a href="#contact" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">Contact</a></li>
+              <li className="pt-4">
+                <a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                  <Download size={16} /> Download Resume
+                </a>
+              </li>
+              <li className="pt-2">
+                <button onClick={() => setIsTerminalOpen(true)} className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                  <Terminal size={16} /> SSH / Curl Tools
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
 
-        <div className="mt-12 md:mt-0 flex flex-col gap-2 font-bold text-black bg-accent-yellow p-4 cartoon-border cartoon-shadow transform rotate-1">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-accent-green cartoon-border" />
-            Available for collaboration
-          </div>
-          <div>Based in Bangalore, India</div>
+        <div className="hidden md:flex gap-6 mt-16">
+          <a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gray-900 transition-colors"><Github size={24} /></a>
+          <a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors"><Linkedin size={24} /></a>
+          <a href="mailto:harshsri2208@gmail.com" className="text-gray-400 hover:text-red-500 transition-colors"><Mail size={24} /></a>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:pl-10 lg:pl-16 pt-12 md:pt-0 overflow-y-auto">
-        <div className="max-w-4xl space-y-24">
-          
-          {/* Projects Section */}
-          <section id="projects" className="space-y-8">
-            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
-              <h2 className="font-serif text-4xl font-bold">Featured Projects</h2>
-              <span className="micro-label mb-0 bg-accent !text-white transform rotate-3">01 &mdash; 06</span>
+      <main className="flex-1 min-w-0 pb-24 space-y-24">
+        
+        {/* About Section */}
+        <section id="about" className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <div className="space-y-4 max-w-3xl">
+            <h2 className="font-serif text-3xl font-bold text-gray-900">About Me</h2>
+            <div className="prose prose-lg text-gray-600">
+              <p className="leading-relaxed">
+                I am a Software Engineer based in India, driven by the intersection of complex backends and intuitive interfaces. My journey started with a fascination for automation, which led me to build tools that simplify human interaction with technology.
+              </p>
+              <p className="leading-relaxed">
+                With expertise in Python, Java, and React, I specialize in architecting scalable systems and developing machine learning pipelines. When I'm not optimizing algorithms, I'm exploring new frameworks or contributing to open source.
+              </p>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {PROJECTS.map((project, idx) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="cartoon-card group hover:-translate-y-2 hover:-translate-x-2"
-                >
-                  <span className="micro-label bg-accent-green text-black">{project.tags[0] || "System"}</span>
-                  <h3 className="group-hover:text-accent transition-colors flex items-center justify-between font-serif text-2xl font-bold mb-3 text-ink">
-                    {project.title}
-                    {project.link && <a href={project.link} target="_blank" rel="noreferrer"><ExternalLink size={24} className="text-ink transition-transform group-hover:scale-125" /></a>}
-                  </h3>
-                  <p className="text-ink-dim font-bold text-base leading-relaxed mb-6 h-12 overflow-hidden line-clamp-2">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.slice(1).map(tag => (
-                      <span key={tag} className="text-[12px] uppercase tracking-widest text-ink font-bold px-3 py-1 bg-surface cartoon-border">
-                        {tag}
-                      </span>
-                    ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Experience</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-semibold text-gray-900">SAP Labs</h4>
+                    <p className="text-sm text-gray-500">Software Engineering Intern</p>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-
-          {/* About Section */}
-          <section id="about" className="space-y-12">
-            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
-              <h2 className="font-serif text-4xl font-bold">About Me</h2>
-              <span className="micro-label mb-0 bg-accent-blue text-black transform -rotate-3">BIOGRAPHY</span>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div className="space-y-6 text-ink-dim text-base font-bold leading-relaxed cartoon-card bg-surface">
-                <p>
-                  I am a Software Engineer based in India, driven by the intersection of complex backends and intuitive interfaces. My journey started with a fascination for automation, which led me to build tools that simplify human interaction with technology.
-                </p>
-                <p>
-                  With a solid foundation in Computer Science, I've had the privilege of working with organizations like SAP Labs, where I honed my skills in enterprise-grade software development. My aspirations lie in architecting scalable distributed systems that empower global communities.
-                </p>
-                <div className="pt-4 grid grid-cols-2 gap-4">
-                  <div className="bg-accent-yellow p-4 cartoon-border transform rotate-1">
-                    <span className="micro-label !text-[10px] bg-surface text-ink">AWARDS</span>
-                    <ul className="mt-2 text-black font-bold text-sm">
-                      <li>• SAP Excellence Intern</li>
-                      <li>• Hackathon Winner 2023</li>
-                    </ul>
-                  </div>
-                  <div className="bg-accent p-4 cartoon-border transform -rotate-1 text-black">
-                    <span className="micro-label !text-[10px] bg-surface text-ink">EDUCATION</span>
-                    <ul className="mt-2 font-bold text-sm">
-                      <li>• B.Tech, Computer Science</li>
-                      <li>• Specialization in AI/ML</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="pt-2">
-                  <a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="cartoon-button bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-lg w-full text-center flex items-center justify-center gap-2">
-                    <ExternalLink size={20} />
-                    Download Official Resume
-                  </a>
+                  <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">2023</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-6">
-                {SKILLS.map((skill, idx) => (
-                  <div key={skill.name} className={`cartoon-card p-6 flex flex-col gap-3 ${idx % 2 === 0 ? 'bg-accent-blue' : 'bg-surface'}`}>
-                    <span className={`font-serif text-2xl font-bold ${idx % 2 === 0 ? 'text-black' : 'text-ink'}`}>{skill.name}</span>
-                    <div className="flex flex-wrap gap-2">
-                      {skill.items.map(i => (
-                        <span key={i} className="text-sm text-ink font-bold bg-surface cartoon-border px-2 py-1">{i}</span>
-                      ))}
-                    </div>
-                  </div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Core Skills</h3>
+              <div className="flex flex-wrap gap-2">
+                {SKILLS.flatMap(s => s.items).slice(0, 8).map((skill, i) => (
+                  <span key={i} className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-700">
+                    {skill}
+                  </span>
                 ))}
+                <span className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-400">+{SKILLS.flatMap(s=>s.items).length - 8} more</span>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* Experience Section */}
-          <section className="space-y-8">
-            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
-              <h2 className="font-serif text-4xl font-bold">Experience</h2>
-            </div>
-            
-            <div className="space-y-0 cartoon-card bg-surface p-0">
-              <div className="exp-row px-8">
-                <div>
-                  <div className="exp-company">SAP Labs</div>
-                  <div className="exp-role text-ink-dim font-bold text-base">Case Study & Internship Prep</div>
-                </div>
-                <div className="exp-year">2024 &mdash; Pres.</div>
-              </div>
-              <div className="exp-row px-8 bg-accent-green">
-                <div>
-                  <div className="exp-company text-black">PyWarriors Community</div>
-                  <div className="exp-role text-black text-base font-bold">Lead Developer</div>
-                </div>
-                <div className="exp-year !text-black">2023 &mdash; 2024</div>
-              </div>
-              <div className="exp-row px-8 border-none bg-accent-yellow">
-                <div>
-                  <div className="exp-company text-black">Software Engineering Projects</div>
-                  <div className="exp-role text-black font-bold text-base">Full Stack Development</div>
-                </div>
-                <div className="exp-year !text-black">2022 &mdash; 2023</div>
-              </div>
-            </div>
-          </section>
-
-          {/* Behind the Code Section */}
-          <section className="space-y-6 max-w-2xl cartoon-card bg-accent text-white">
-            <span className="micro-label bg-surface text-ink">Behind the Code</span>
-            <p className="font-serif text-3xl font-bold leading-snug">
-              "The most powerful technologies are those that disappear into the fabric of daily life."
-            </p>
-            <p className="text-white text-base font-bold leading-relaxed">
-              I believe in software that is as beautiful internally as it is externally. My approach combines the rigor of engineering with the nuance of design, ensuring that every line of code serves a larger narrative.
-            </p>
-          </section>
-
-          {/* Contact Section */}
-          <section id="contact" className="space-y-12">
-            <div className="flex justify-between items-end border-b-4 border-ink pb-4">
-              <h2 className="font-serif text-4xl font-bold">Get in Touch</h2>
-              <span className="micro-label mb-0 bg-accent-yellow text-black">CONTACT</span>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div className="space-y-6 cartoon-card bg-accent-blue">
-                <p className="text-black text-lg font-bold leading-relaxed">
-                  Whether you have a question about my work or just want to say hello, my inbox is always open. Feel free to reach out via the form, or connect through social channels.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
-                    <Mail size={24} className="text-accent" />
-                    <span>harshsri2208@gmail.com</span>
-                  </div>
-                  <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
-                    <Globe size={24} className="text-accent" />
-                    <span>Bangalore, India</span>
-                  </div>
-                </div>
-              </div>
-              <form 
-                action="https://formspree.io/f/mnjlvjrp" // The user will need to replace this with their actual Formspree ID
-                method="POST"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const form = e.currentTarget;
-                  const formData = new FormData(form);
-                  
-                  // If they haven't configured a real endpoint yet, we show a friendly success message for the demo
-                  if (form.action.includes('placeholder')) {
-                    alert("Demo: In a live deployment, this would send a message to your email via Formspree! Please replace the placeholder ID in App.tsx with your own.");
-                    form.reset();
-                    return;
-                  }
-
-                  try {
-                    const res = await fetch(form.action, {
-                      method: 'POST',
-                      body: formData,
-                      headers: { 'Accept': 'application/json' }
-                    });
-                    if (res.ok) {
-                      alert("Message received! I'll get back to you soon.");
-                      form.reset();
-                    }
-                  } catch (err) {
-                    alert("Something went wrong. Please check your internet connection and try again.");
-                  }
-                }}
-                className="space-y-6 cartoon-card bg-surface"
+        {/* Projects Section */}
+        <section id="projects" className="space-y-10">
+          <h2 className="font-serif text-3xl font-bold text-gray-900">Selected Works</h2>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            {PROJECTS.map((project, idx) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all group relative overflow-hidden"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="micro-label !text-[10px] bg-accent text-white">NAME</label>
-                    <input name="name" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-110 transition-transform">
+                    {project.icon}
                   </div>
-                  <div className="space-y-2">
-                    <label className="micro-label !text-[10px] bg-accent text-white">EMAIL</label>
-                    <input name="email" type="email" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
-                  </div>
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors">
+                      <ExternalLink size={20} />
+                    </a>
+                  )}
+                </div>
+                <h3 className="font-serif text-2xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6 h-16 overflow-hidden">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map(tag => (
+                    <span key={tag} className="text-xs font-medium text-gray-600 bg-gray-50 border border-gray-100 px-2 py-1 rounded-md">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="space-y-10">
+          <div className="max-w-2xl">
+            <h2 className="font-serif text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+              Whether you have a question about my work or just want to say hello, my inbox is always open.
+            </p>
+            
+            <form 
+              action="https://formspree.io/f/mnjlvjrp"
+              method="POST"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const formData = new FormData(form);
+                
+                const email = formData.get('email') as string;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email && !emailRegex.test(email)) {
+                  alert("Please provide a valid email address.");
+                  return;
+                }
+                
+                if (form.action.includes('placeholder')) {
+                  alert("Demo: In a live deployment, this would send a message to your email via Formspree!");
+                  form.reset();
+                  return;
+                }
+
+                try {
+                  const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                  });
+                  if (res.ok) {
+                    alert("Message received! I'll get back to you soon.");
+                    form.reset();
+                  }
+                } catch (err) {
+                  alert("Something went wrong. Please check your internet connection and try again.");
+                }
+              }}
+              className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm space-y-6"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</label>
+                  <input name="name" required className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="micro-label !text-[10px] bg-accent text-white">MESSAGE</label>
-                  <textarea name="message" required rows={4} className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl resize-none" />
+                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</label>
+                  <input name="email" type="email" required className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
                 </div>
-                <button type="submit" className="cartoon-button w-full bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-xl">
-                  Dispatch Message
-                </button>
-                <p className="text-sm text-ink-dim font-bold italic text-center">
-                  This form uses a secure serverless integration to forward messages to my primary address.
-                </p>
-              </form>
-            </div>
-          </section>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Message</label>
+                <textarea name="message" required rows={5} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none" />
+              </div>
+              <button type="submit" className="w-full bg-gray-900 text-white font-medium py-3 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                <Mail size={18} /> Send Message
+              </button>
+            </form>
+          </div>
+        </section>
 
-          {/* Footer */}
-          <footer className="pt-20 pb-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t-4 border-ink mt-20">
-            <div className="flex gap-8">
-              <a href="https://github.com/harshsri2208" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Github</a>
-              <a href="https://linkedin.com/in/harshsri2208" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Linkedin</a>
-              <a href="mailto:harshsri2208@gmail.com" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Email</a>
-            </div>
-            <p className="text-sm text-black uppercase font-bold tracking-[2px] bg-accent-yellow px-4 py-2 cartoon-border rounded-full transform rotate-2">
-              &copy; 2026 Harsh Srivastava
-            </p>
-          </footer>
-        </div>
+        {/* Mobile Footer */}
+        <footer className="md:hidden border-t border-gray-200 pt-8 mt-12 flex flex-col items-center gap-6">
+          <div className="flex gap-6">
+            <a href="https://github.com/harshsri2208" className="text-gray-400 hover:text-gray-900"><Github size={24} /></a>
+            <a href="https://linkedin.com/in/harshsri2208" className="text-gray-400 hover:text-blue-600"><Linkedin size={24} /></a>
+            <a href="mailto:harshsri2208@gmail.com" className="text-gray-400 hover:text-red-500"><Mail size={24} /></a>
+          </div>
+          <p className="text-sm text-gray-500">© 2026 Harsh Srivastava</p>
+        </footer>
       </main>
 
       {/* Terminal Modal */}
@@ -547,89 +303,57 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsTerminalOpen(false)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-50"
             />
             <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-surface cartoon-border cartoon-shadow z-[101] p-6 md:p-10 overflow-y-auto max-h-[90vh] mx-4"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-2xl shadow-xl z-50 overflow-hidden"
             >
-              <button 
-                onClick={() => setIsTerminalOpen(false)}
-                className="absolute top-6 right-6 p-2 bg-accent text-white rounded-full cartoon-border hover:bg-accent/80 transition-colors"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-accent-yellow rounded-2xl cartoon-border shadow-[4px_4px_0_#000]">
-                  <Monitor size={32} className="text-black" />
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-white rounded-lg shadow-sm border border-gray-100">
+                    <Monitor size={20} className="text-gray-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Developer Tools</h3>
+                    <p className="text-xs text-gray-500">Access portfolio via CLI</p>
+                  </div>
+                </div>
+                <button onClick={() => setIsTerminalOpen(false)} className="p-2 text-gray-400 hover:text-gray-600 bg-white rounded-lg border border-gray-100 shadow-sm transition-colors">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="p-8 space-y-8">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 text-xs">1</span>
+                    cURL Access
+                  </h4>
+                  <div className="bg-gray-900 rounded-lg p-4 flex items-center justify-between group">
+                    <code className="text-green-400 font-mono text-sm">curl -L {window.location.host}</code>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(`curl -L ${window.location.host}`);
+                        setCopiedCurl(true);
+                        setTimeout(() => setCopiedCurl(false), 2000);
+                      }}
+                      className="text-gray-400 hover:text-white transition-colors p-1"
+                    >
+                      {copiedCurl ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
+                    </button>
+                  </div>
                 </div>
                 <div>
-                  <h2 className="editorial-subtitle text-3xl mb-1">Terminal Mode</h2>
-                  <p className="text-ink-dim font-bold">Access the portfolio via CLI</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                <div className="space-y-8">
-                  {/* Curl Box */}
-                  <div>
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <span className="w-8 h-8 rounded-full bg-accent-blue text-black flex items-center justify-center text-sm cartoon-border">1</span>
-                      Via Curl
-                    </h3>
-                    <div className="bg-bg cartoon-border p-4 relative group mb-4">
-                      <code className="text-accent-blue font-mono text-sm break-all">
-                        curl -L {window.location.host}
-                      </code>
-                      <button 
-                        onClick={() => {
-                          navigator.clipboard.writeText(`curl -L ${window.location.host}`);
-                          setCopiedCurl(true);
-                          setTimeout(() => setCopiedCurl(false), 2000);
-                        }}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-surface cartoon-border hover:bg-bg transition-colors"
-                      >
-                        {copiedCurl ? <Check size={16} className="text-accent-green" /> : <Copy size={16} />}
-                      </button>
-                    </div>
-                    <div className="bg-accent-yellow/10 cartoon-border border-accent-yellow p-4 text-xs font-bold text-accent-yellow leading-relaxed">
-                      ⚠️ Sandbox Note: AI Studio's "Cookie Check" might block curl. This command works perfectly once you host this app on Render, Railway, or VPS!
-                    </div>
-                  </div>
-
-                  {/* SSH Box */}
-                  <div>
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <span className="w-8 h-8 rounded-full bg-accent-green text-black flex items-center justify-center text-sm cartoon-border">2</span>
-                      Via SSH
-                    </h3>
-                    <div className="bg-bg cartoon-border p-6 space-y-4">
-                      <p className="text-ink-dim text-sm font-bold leading-relaxed">
-                        GitHub Pages is static. To enable real SSH, you can run the provided server code on any VPS.
-                      </p>
-                      <div className="flex gap-4">
-                        <a 
-                          href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="cartoon-button bg-bg text-white !py-2 !px-4 !text-sm flex items-center gap-2"
-                        >
-                          <Terminal size={14} /> Get SSH Server Source
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Live Preview */}
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-tighter">
-                    Live UI Preview
-                  </h3>
-                  <TerminalPreview />
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 text-xs">2</span>
+                    SSH Server Source
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-4">GitHub Pages is static. To enable real SSH access, deploy the Node server on a VPS.</p>
+                  <a href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors">
+                    <Terminal size={16} /> View Source Code
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -637,22 +361,5 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
-  );
-}
-
-function Twitter({ size }: { size: number }) {
-  return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-    </svg>
   );
 }

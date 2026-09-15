@@ -1,181 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Fredoka", sans-serif;
-  --font-sans: "Quicksand", sans-serif;
-
-  --color-bg: #111111; /* Deep Black/Gray */
-  --color-surface: #26262B; /* Dark raised surface */
-  --color-ink: #FFFFFF; /* All borders and main text are solid white */
-  --color-ink-dim: #A1A1AA; /* Light gray text for descriptions */
-  --color-black: #000000; /* Real black for text on bright labels */
-  --color-shadow: #38BDF8; /* Sky blue shadow */
-
-  --color-accent: #FF3366; 
-  --color-accent-blue: #00E5FF;
-  --color-accent-yellow: #FFD600;
-  --color-accent-green: #00E676;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  
+  --color-bg: #F9FAFB;
+  --color-surface: #FFFFFF;
+  --color-ink: #111827;
+  --color-ink-dim: #4B5563;
+  
+  --color-accent: #2563EB;
+  --color-accent-blue: #EFF6FF;
+  --color-border: #E5E7EB;
 }
 
 @layer base {
   body {
     @apply bg-bg text-ink antialiased min-h-screen relative;
     font-family: var(--font-sans);
-    background-image: radial-gradient(#2A2A35 1.5px, transparent 1.5px);
-    background-size: 30px 30px;
-    background-position: -19px -19px;
   }
 }
 
 @layer components {
-  .cartoon-border {
-    border: 4px solid var(--color-ink);
+  .pro-card {
+    @apply bg-surface rounded-2xl border border-gray-200 shadow-sm p-8 transition-all relative overflow-hidden;
   }
-
-  .cartoon-shadow {
-    box-shadow: 6px 6px 0px var(--color-shadow);
-  }
-
-  .cartoon-shadow-hover:hover {
-    box-shadow: 2px 2px 0px var(--color-shadow);
-    transform: translate(4px, 4px);
-  }
-
-  .cartoon-card {
-    border: 4px solid var(--color-ink);
-    box-shadow: 6px 6px 0px var(--color-shadow);
-    @apply bg-surface rounded-3xl p-8 transition-all relative overflow-hidden;
-  }
-
-  .cartoon-button {
-    border: 4px solid var(--color-ink);
-    box-shadow: 6px 6px 0px var(--color-shadow);
-    @apply bg-surface text-ink rounded-full px-6 py-3 font-serif font-bold text-lg uppercase transition-all;
+  .pro-card:hover {
+    @apply shadow-md border-gray-300;
   }
   
-  .cartoon-button:hover {
-    box-shadow: 2px 2px 0px var(--color-shadow);
-    transform: translate(4px, 4px);
+  .pro-button {
+    @apply bg-ink text-white rounded-lg px-6 py-3 font-sans font-medium text-sm transition-all shadow-sm flex items-center justify-center gap-2;
+  }
+  .pro-button:hover {
+    @apply bg-gray-800 shadow;
   }
 
-  .cartoon-image {
-    filter: contrast(1.4) saturate(1.8) brightness(1.1) sepia(0.2) hue-rotate(-5deg);
-    /* For extra crisp comic feel */
+  .pro-button-secondary {
+    @apply bg-white border border-gray-300 text-ink rounded-lg px-6 py-3 font-sans font-medium text-sm transition-all shadow-sm flex items-center justify-center gap-2;
+  }
+  .pro-button-secondary:hover {
+    @apply bg-gray-50;
   }
 
   .editorial-title {
-    @apply font-serif text-[clamp(44px,8vw,80px)] leading-[1.1] font-bold tracking-tight text-ink;
-    text-shadow: 4px 4px 0px var(--color-shadow);
+    @apply font-serif text-[clamp(40px,6vw,64px)] leading-[1.1] font-bold tracking-tight text-ink;
   }
-
+  
   .editorial-nav-link {
-    @apply font-sans text-xl font-bold opacity-70 hover:opacity-100 transition-all hover:text-accent hover:translate-x-2 inline-block py-2;
+    @apply font-sans text-sm font-medium text-gray-500 hover:text-accent transition-colors block py-2;
   }
-
   .editorial-nav-link.active {
-    @apply opacity-100 text-accent underline decoration-4 underline-offset-8;
+    @apply text-accent font-semibold;
   }
-
+  
   .micro-label {
-    border: 4px solid var(--color-ink);
-    box-shadow: 3px 3px 0px var(--color-accent);
-    @apply text-sm uppercase tracking-widest bg-ink text-white font-bold px-3 py-1 rounded-full inline-block mb-3 box-border;
-  }
-
-  .project-card h3 {
-    @apply font-serif text-3xl font-bold mb-3 text-ink;
-  }
-
-  .exp-row {
-    @apply flex justify-between items-center py-6 border-b-4 border-ink;
-  }
-
-  .exp-company {
-    @apply font-serif text-2xl font-bold text-ink;
-  }
-
-  .exp-year {
-    @apply font-sans text-lg font-bold text-accent;
+    @apply text-xs tracking-wider text-accent font-semibold uppercase mb-3 inline-block;
   }
 }
-
-.speech-bubble {
-  position: relative;
-  background: white;
-  border-radius: 20px;
-  border: 4px solid var(--color-ink);
-  padding: 16px;
-  box-shadow: 4px 4px 0px var(--color-ink);
-}
-
-.speech-bubble:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 20px;
-  width: 0;
-  height: 0;
-  border: 15px solid transparent;
-  border-top-color: white;
-  border-bottom: 0;
-  border-left: 0;
-  margin-left: -7.5px;
-  margin-bottom: -15px;
-  z-index: 2;
-}
-
-.speech-bubble:before {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 20px;
-  width: 0;
-  height: 0;
-  border: 19px solid transparent;
-  border-top-color: var(--color-ink);
-  border-bottom: 0;
-  border-left: 0;
-  margin-left: -9.5px;
-  margin-bottom: -19px;
-  z-index: 1;
-}
-
-.speech-bubble.ai-msg {
-  background: var(--color-accent-yellow);
-  color: var(--color-black);
-}
-.speech-bubble.ai-msg:after {
-  border-top-color: var(--color-accent-yellow);
-  left: 20px;
-  border-right: 0;
-  border-left: 15px solid transparent;
-}
-.speech-bubble.ai-msg:before {
-  left: 20px;
-  border-right: 0;
-  border-left: 19px solid transparent;
-}
-
-.speech-bubble.user-msg {
-  background: var(--color-accent-blue);
-  color: var(--color-black);
-}
-.speech-bubble.user-msg:after {
-  border-top-color: var(--color-accent-blue);
-  left: auto;
-  right: 20px;
-  border-left: 0;
-  border-right: 15px solid transparent;
-  margin-right: -7.5px;
-  margin-left: 0;
-}
-.speech-bubble.user-msg:before {
-  left: auto;
-  right: 20px;
-  border-left: 0;
-  border-right: 19px solid transparent;
-  margin-right: -9.5px;
-  margin-left: 0;
-}
-
