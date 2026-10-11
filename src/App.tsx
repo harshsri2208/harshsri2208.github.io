@@ -17,7 +17,6 @@ import {
   Check,
   Download
 } from 'lucide-react';
-import { cn } from './lib/utils'; // wait, does this exist? If not I'll remove cn or define it
 
 // Types
 type Project = {
@@ -81,107 +80,126 @@ const SKILLS = [
   { name: "Tools & ML", items: ["Git/GitHub", "Docker", "Linux", "Scikit-Learn", "TensorFlow"] }
 ];
 
-const Avatar = () => (
-  <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
-    <img 
-      src="https://api.dicebear.com/7.x/notionists/svg?seed=Harsh&backgroundColor=e2e8f0" 
-      alt="Harsh Srivastava" 
-      className="w-full h-full object-cover" 
-    />
-  </div>
-);
+const MindBlowingBadge = () => {
+  return (
+    <div className="relative group w-48 h-48 md:w-56 md:h-56">
+      <div className="absolute -inset-2 bg-accent-yellow transform -rotate-3 cartoon-border rounded-[2rem] w-full h-full -z-10 group-hover:-rotate-6 transition-transform duration-300" />
+      <div className="w-full h-full rounded-3xl cartoon-border bg-accent cartoon-shadow relative overflow-hidden flex items-center justify-center transition-shadow duration-300 group-hover:shadow-[12px_12px_0_var(--color-shadow)]">
+        <img 
+          src="/me.jpg" 
+          alt="Harsh Srivastava" 
+          className="w-full h-full object-cover cartoon-image"
+        />
+        <div className="absolute bottom-2 right-2 bg-accent-yellow text-black font-black text-lg md:text-xl px-2 py-1 rotate-[-12deg] cartoon-border shadow-[4px_4px_0_#000] z-20">
+          HARSH!
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TerminalPreview = () => {
+  return (
+    <div className="bg-[#0c0c0c] cartoon-border p-4 md:p-6 font-mono text-[10px] md:text-xs leading-none overflow-x-auto select-none rounded-xl">
+      <pre className="text-accent-blue whitespace-pre font-mono">
+{`╔═════════════════════════════════════════════════════════╗
+║                                                         ║
+║   ██╗  ██╗ █████╗ ██████╗ ███████╗██╗  ██╗              ║
+║   ██║  ██║██╔══██╗██╔══██╗██╔════╝██║  ██║              ║
+║   ███████║███████║██████╔╝███████╗███████║              ║
+║   ██╔══██║██╔══██║██╔══██╗╚════██║██╔══██║              ║
+║   ██║  ██║██║  ██║██║  ██║███████║██║  ██║              ║
+║   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝              ║
+║                                                         ║
+║   SRIVASTAVA | Software Engineer                        ║
+║                                                         ║
+╚═════════════════════════════════════════════════════════╝
+
+── ABOUT ──────────────────────────────────────────────────
+Crafting digital experiences through elegant code and 
+intentional design.
+
+── PROJECTS ───────────────────────────────────────────────
+• AnomalyDetection_CVPR18
+• Expense Tracker
+• Cab Management
+
+── CONNECT ────────────────────────────────────────────────
+• GitHub:   https://github.com/harshsri2208
+• LinkedIn: https://linkedin.com/in/harshsri2208
+• Email:    harshsri2208@gmail.com`}
+      </pre>
+    </div>
+  );
+};
 
 export default function App() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [copiedCurl, setCopiedCurl] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col md:flex-row p-6 md:p-12 lg:p-20 gap-12 max-w-[1600px] mx-auto">
+    <div className="min-h-screen bg-bg text-ink flex flex-col md:flex-row p-6 md:p-12 lg:p-20 gap-12 max-w-[1600px] mx-auto selection:bg-accent selection:text-white">
       {/* Sidebar Navigation */}
       <aside className="w-full md:w-64 lg:w-80 flex flex-col justify-between shrink-0 h-fit sticky top-20">
         <div className="space-y-12">
-          <div className="profile-section flex flex-col items-start gap-6">
-            <Avatar />
-            <div>
-              <h1 className="font-serif text-4xl font-bold tracking-tight text-gray-900 mb-2">Harsh Srivastava</h1>
-              <p className="font-sans text-lg font-medium text-blue-600">Software Engineer</p>
+          <div className="profile-section flex flex-col items-start">
+            <MindBlowingBadge />
+            <div className="mt-8">
+              <h1 className="editorial-title mb-2">Harsh</h1>
+              <p className="font-serif text-3xl font-bold text-accent-blue">Srivastava</p>
+            </div>
+            <div className="bio text-ink-dim text-lg font-bold leading-relaxed max-w-xs mt-6 bg-surface cartoon-border p-4 cartoon-shadow relative transform -rotate-2">
+              Software Engineer crafting intelligent backends and dynamic web systems.
             </div>
           </div>
           
           <nav className="hidden md:block">
             <ul className="space-y-4">
-              <li><a href="#about" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">About Me</a></li>
-              <li><a href="#projects" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">Selected Works</a></li>
-              <li><a href="#contact" className="font-sans text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">Contact</a></li>
-              <li className="pt-4">
-                <a href="#" onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors">
-                  <Download size={16} /> Download Resume
+              <li><a href="#projects" className="editorial-nav-link active">Selected Works</a></li>
+              <li><a href="#about" className="editorial-nav-link">About Me</a></li>
+              <li><a href="#contact" className="editorial-nav-link">Contact</a></li>
+              <li>
+                <a 
+                  href="#" 
+                  onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }} 
+                  className="editorial-nav-link flex items-center gap-2"
+                >
+                  Download Resume <span className="inline-block py-0.5 px-1.5 bg-accent-blue text-black text-[10px] rounded cartoon-border">PDF</span>
                 </a>
               </li>
-              <li className="pt-2">
-                <button onClick={() => setIsTerminalOpen(true)} className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors">
-                  <Terminal size={16} /> SSH / Curl Tools
+              <li>
+                <button 
+                  onClick={() => setIsTerminalOpen(true)} 
+                  className="editorial-nav-link text-left flex items-center gap-2"
+                >
+                  SSH / Curl Tools <span className="inline-block py-0.5 px-1.5 bg-accent-yellow text-black text-[10px] rounded cartoon-border">NEW</span>
                 </button>
               </li>
+              <li><a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">LinkedIn</a></li>
+              <li><a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="editorial-nav-link">GitHub</a></li>
             </ul>
           </nav>
         </div>
 
-        <div className="hidden md:flex gap-6 mt-16">
-          <a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gray-900 transition-colors"><Github size={24} /></a>
-          <a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors"><Linkedin size={24} /></a>
-          <a href="mailto:harshsri2208@gmail.com" className="text-gray-400 hover:text-red-500 transition-colors"><Mail size={24} /></a>
+        <div className="mt-12 md:mt-0 flex flex-col gap-2 font-bold text-black bg-accent-yellow p-4 cartoon-border cartoon-shadow transform rotate-1">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-accent-green cartoon-border animate-pulse" />
+            <span className="text-xs uppercase tracking-wider">Status</span>
+          </div>
+          <span className="text-sm">Available for Opportunities</span>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 min-w-0 pb-24 space-y-24">
-        
-        {/* About Section */}
-        <section id="about" className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <div className="space-y-4 max-w-3xl">
-            <h2 className="font-serif text-3xl font-bold text-gray-900">About Me</h2>
-            <div className="prose prose-lg text-gray-600">
-              <p className="leading-relaxed">
-                I am a Software Engineer based in India, driven by the intersection of complex backends and intuitive interfaces. My journey started with a fascination for automation, which led me to build tools that simplify human interaction with technology.
-              </p>
-              <p className="leading-relaxed">
-                With expertise in Python, Java, and React, I specialize in architecting scalable systems and developing machine learning pipelines. When I'm not optimizing algorithms, I'm exploring new frameworks or contributing to open source.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Experience</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="font-semibold text-gray-900">SAP Labs</h4>
-                    <p className="text-sm text-gray-500">Software Engineering Intern</p>
-                  </div>
-                  <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">2023</span>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Core Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {SKILLS.flatMap(s => s.items).slice(0, 8).map((skill, i) => (
-                  <span key={i} className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-700">
-                    {skill}
-                  </span>
-                ))}
-                <span className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-xs font-medium text-gray-400">+{SKILLS.flatMap(s=>s.items).length - 8} more</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Projects Section */}
-        <section id="projects" className="space-y-10">
-          <h2 className="font-serif text-3xl font-bold text-gray-900">Selected Works</h2>
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <section id="projects" className="space-y-12">
+          <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold">Selected Works</h2>
+            <span className="micro-label mb-0 bg-accent text-white">PROJECTS</span>
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
             {PROJECTS.map((project, idx) => (
               <motion.div
                 key={project.title}
@@ -189,25 +207,32 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all group relative overflow-hidden"
+                className="cartoon-card group hover:-translate-y-2 hover:-translate-x-2"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-110 transition-transform">
+                  <div className="p-3 bg-accent-blue text-black rounded-2xl cartoon-border shadow-[3px_3px_0_#000]">
                     {project.icon}
                   </div>
                   {project.link && (
-                    <a href={project.link} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-blue-600 transition-colors">
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-2 bg-surface cartoon-border rounded-full hover:bg-accent hover:text-white transition-colors"
+                    >
                       <ExternalLink size={20} />
                     </a>
                   )}
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 h-16 overflow-hidden">
+                <h3 className="font-serif text-2xl md:text-3xl font-bold text-ink mb-3 group-hover:text-accent-blue transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-ink-dim font-bold text-base leading-relaxed mb-6">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map(tag => (
-                    <span key={tag} className="text-xs font-medium text-gray-600 bg-gray-50 border border-gray-100 px-2 py-1 rounded-md">
+                    <span key={tag} className="text-[12px] uppercase tracking-widest text-ink font-bold px-3 py-1 bg-surface cartoon-border">
                       {tag}
                     </span>
                   ))}
@@ -217,14 +242,106 @@ export default function App() {
           </div>
         </section>
 
+        {/* About Section */}
+        <section id="about" className="space-y-12">
+          <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold">About Me</h2>
+            <span className="micro-label mb-0 bg-accent-blue text-black">PROFILE</span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6 text-ink-dim text-base font-bold leading-relaxed cartoon-card bg-surface">
+              <p>
+                I am a Software Engineer based in India, driven by the intersection of complex backends and intuitive interfaces. My journey started with a fascination for automation, which led me to build tools that simplify human interaction with technology.
+              </p>
+              <p>
+                With expertise in Python, Java, and React, I specialize in architecting scalable systems and developing machine learning pipelines. When I'm not optimizing algorithms, I'm exploring new frameworks or contributing to open source.
+              </p>
+
+              <div className="pt-4 flex flex-col sm:flex-row gap-4">
+                <div className="bg-accent-yellow p-4 cartoon-border transform rotate-1 flex-1">
+                  <span className="text-xs uppercase tracking-wider text-black block font-black">Role</span>
+                  <span className="text-lg text-black font-black">Software Engineer</span>
+                </div>
+                <div className="bg-accent p-4 cartoon-border transform -rotate-1 text-black flex-1">
+                  <span className="text-xs uppercase tracking-wider text-white block font-black">Location</span>
+                  <span className="text-lg text-white font-black">Bangalore, India</span>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); alert('In a live deployment, this will download your actual Resume PDF.'); }}
+                  className="cartoon-button bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-lg w-full text-center flex items-center justify-center gap-2"
+                >
+                  <Download size={20} /> Download Full Resume PDF
+                </a>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="cartoon-card bg-surface">
+                <h3 className="font-serif text-2xl font-bold text-ink mb-6 flex items-center gap-2">
+                  <Briefcase className="text-accent" /> Experience
+                </h3>
+                <div className="space-y-4">
+                  <div className="exp-row">
+                    <div>
+                      <div className="exp-company">SAP Labs</div>
+                      <div className="text-ink-dim font-bold text-sm">Software Engineering Intern</div>
+                    </div>
+                    <div className="exp-year">2023</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {SKILLS.map((skill, idx) => (
+                  <div key={skill.name} className={`cartoon-card p-6 flex flex-col gap-3 ${idx % 2 === 0 ? 'bg-accent-blue' : 'bg-surface'}`}>
+                    <h4 className="font-serif text-xl font-bold text-black">{skill.name}</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {skill.items.map(i => (
+                        <span key={i} className="text-sm text-ink font-bold bg-surface cartoon-border px-2 py-1">{i}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Behind the Code Section */}
+        <section className="space-y-6 max-w-2xl cartoon-card bg-accent text-white">
+          <span className="micro-label bg-surface text-ink">Behind the Code</span>
+          <p className="font-serif text-3xl font-bold leading-snug">
+            Code is the canvas, architecture is the art. Crafting systems with scale, clarity, and bold character.
+          </p>
+        </section>
+
         {/* Contact Section */}
-        <section id="contact" className="space-y-10">
-          <div className="max-w-2xl">
-            <h2 className="font-serif text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Whether you have a question about my work or just want to say hello, my inbox is always open.
-            </p>
-            
+        <section id="contact" className="space-y-12">
+          <div className="flex justify-between items-end border-b-4 border-ink pb-4">
+            <h2 className="font-serif text-4xl font-bold">Get in Touch</h2>
+            <span className="micro-label mb-0 bg-accent-yellow text-black">CONTACT</span>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6 cartoon-card bg-accent-blue">
+              <p className="text-black text-lg font-bold leading-relaxed">
+                Whether you have a question about my work or just want to say hello, my inbox is always open. Feel free to reach out via the form, or connect through social channels.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                  <Mail size={24} className="text-accent" />
+                  <span>harshsri2208@gmail.com</span>
+                </div>
+                <div className="flex items-center gap-4 text-ink font-bold text-lg bg-surface p-3 cartoon-border rounded-xl">
+                  <Globe size={24} className="text-accent" />
+                  <span>Bangalore, India</span>
+                </div>
+              </div>
+            </div>
             <form 
               action="https://formspree.io/f/mnjlvjrp"
               method="POST"
@@ -233,6 +350,7 @@ export default function App() {
                 const form = e.currentTarget;
                 const formData = new FormData(form);
                 
+                // Client-side email validation
                 const email = formData.get('email') as string;
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (email && !emailRegex.test(email)) {
@@ -241,7 +359,7 @@ export default function App() {
                 }
                 
                 if (form.action.includes('placeholder')) {
-                  alert("Demo: In a live deployment, this would send a message to your email via Formspree!");
+                  alert("Demo: In a live deployment, this would send a message to your email via Formspree! Please replace the placeholder ID in App.tsx with your own.");
                   form.reset();
                   return;
                 }
@@ -260,37 +378,42 @@ export default function App() {
                   alert("Something went wrong. Please check your internet connection and try again.");
                 }
               }}
-              className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm space-y-6"
+              className="space-y-6 cartoon-card bg-surface"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</label>
-                  <input name="name" required className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                  <label className="micro-label !text-[10px] bg-accent text-white">NAME</label>
+                  <input name="name" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</label>
-                  <input name="email" type="email" required className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+                  <label className="micro-label !text-[10px] bg-accent text-white">EMAIL</label>
+                  <input name="email" type="email" required className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Message</label>
-                <textarea name="message" required rows={5} className="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none" />
+                <label className="micro-label !text-[10px] bg-accent text-white">MESSAGE</label>
+                <textarea name="message" required rows={4} className="w-full bg-surface cartoon-border p-4 text-lg font-bold text-ink outline-none focus:bg-accent-yellow focus:text-black transition-colors rounded-xl resize-none" />
               </div>
-              <button type="submit" className="w-full bg-gray-900 text-white font-medium py-3 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                <Mail size={18} /> Send Message
+              <button type="submit" className="cartoon-button w-full bg-accent-green hover:-translate-y-1 hover:bg-surface text-black text-xl">
+                Dispatch Message
               </button>
+              <p className="text-sm text-ink-dim font-bold italic text-center">
+                This form uses a secure serverless integration to forward messages to my primary address.
+              </p>
             </form>
           </div>
         </section>
 
-        {/* Mobile Footer */}
-        <footer className="md:hidden border-t border-gray-200 pt-8 mt-12 flex flex-col items-center gap-6">
-          <div className="flex gap-6">
-            <a href="https://github.com/harshsri2208" className="text-gray-400 hover:text-gray-900"><Github size={24} /></a>
-            <a href="https://linkedin.com/in/harshsri2208" className="text-gray-400 hover:text-blue-600"><Linkedin size={24} /></a>
-            <a href="mailto:harshsri2208@gmail.com" className="text-gray-400 hover:text-red-500"><Mail size={24} /></a>
+        {/* Footer */}
+        <footer className="pt-20 pb-10 flex flex-col md:flex-row justify-between items-center gap-6 border-t-4 border-ink mt-20">
+          <div className="flex gap-8">
+            <a href="https://github.com/harshsri2208" target="_blank" rel="noreferrer" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Github</a>
+            <a href="https://linkedin.com/in/harshsri2208" target="_blank" rel="noreferrer" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Linkedin</a>
+            <a href="mailto:harshsri2208@gmail.com" className="text-ink hover:text-accent font-bold uppercase tracking-widest text-sm transition-colors cartoon-border rounded-full px-4 py-2 bg-surface">Email</a>
           </div>
-          <p className="text-sm text-gray-500">© 2026 Harsh Srivastava</p>
+          <p className="text-sm text-black uppercase font-bold tracking-[2px] bg-accent-yellow px-4 py-2 cartoon-border rounded-full transform rotate-2">
+            &copy; 2026 Harsh Srivastava
+          </p>
         </footer>
       </main>
 
@@ -303,57 +426,87 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsTerminalOpen(false)}
-              className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
             />
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-2xl shadow-xl z-50 overflow-hidden"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-surface cartoon-border cartoon-shadow z-[101] p-6 md:p-10 overflow-y-auto max-h-[90vh] mx-4"
             >
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-lg shadow-sm border border-gray-100">
-                    <Monitor size={20} className="text-gray-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Developer Tools</h3>
-                    <p className="text-xs text-gray-500">Access portfolio via CLI</p>
-                  </div>
+              <button 
+                onClick={() => setIsTerminalOpen(false)}
+                className="absolute top-6 right-6 p-2 bg-accent text-white rounded-full cartoon-border hover:bg-accent/80 transition-colors"
+              >
+                <X size={20} />
+              </button>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-accent-yellow rounded-2xl cartoon-border shadow-[4px_4px_0_#000]">
+                  <Monitor size={32} className="text-black" />
                 </div>
-                <button onClick={() => setIsTerminalOpen(false)} className="p-2 text-gray-400 hover:text-gray-600 bg-white rounded-lg border border-gray-100 shadow-sm transition-colors">
-                  <X size={16} />
-                </button>
+                <div>
+                  <h2 className="editorial-title text-3xl mb-1">Terminal Mode</h2>
+                  <p className="text-ink-dim font-bold">Access the portfolio via CLI</p>
+                </div>
               </div>
-              <div className="p-8 space-y-8">
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 text-xs">1</span>
-                    cURL Access
-                  </h4>
-                  <div className="bg-gray-900 rounded-lg p-4 flex items-center justify-between group">
-                    <code className="text-green-400 font-mono text-sm">curl -L {window.location.host}</code>
-                    <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText(`curl -L ${window.location.host}`);
-                        setCopiedCurl(true);
-                        setTimeout(() => setCopiedCurl(false), 2000);
-                      }}
-                      className="text-gray-400 hover:text-white transition-colors p-1"
-                    >
-                      {copiedCurl ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
-                    </button>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-8">
+                  {/* Curl Box */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full bg-accent-blue text-black flex items-center justify-center text-sm cartoon-border">1</span>
+                      Via Curl
+                    </h3>
+                    <div className="bg-bg cartoon-border p-4 relative group mb-4">
+                      <code className="text-accent-blue font-mono text-sm break-all">
+                        curl -L {typeof window !== 'undefined' ? window.location.host : ''}
+                      </code>
+                      <button 
+                        onClick={() => {
+                          if (typeof window !== 'undefined') {
+                            navigator.clipboard.writeText(`curl -L ${window.location.host}`);
+                            setCopiedCurl(true);
+                            setTimeout(() => setCopiedCurl(false), 2000);
+                          }
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-surface cartoon-border hover:bg-bg transition-colors"
+                      >
+                        {copiedCurl ? <Check size={16} className="text-accent-green" /> : <Copy size={16} />}
+                      </button>
+                    </div>
+                    <div className="bg-accent-yellow/10 cartoon-border border-accent-yellow p-4 text-xs font-bold text-accent-yellow leading-relaxed">
+                      ⚠️ Sandbox Note: AI Studio's "Cookie Check" might block curl. This command works perfectly once you host this app on Render, Railway, or VPS!
+                    </div>
+                  </div>
+                  {/* SSH Box */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full bg-accent-green text-black flex items-center justify-center text-sm cartoon-border">2</span>
+                      Via SSH
+                    </h3>
+                    <div className="bg-bg cartoon-border p-6 space-y-4">
+                      <p className="text-ink-dim text-sm font-bold leading-relaxed">
+                        GitHub Pages is static. To enable real SSH, you can run the provided server code on any VPS.
+                      </p>
+                      <div className="flex gap-4">
+                        <a 
+                          href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="cartoon-button bg-bg text-white !py-2 !px-4 !text-sm flex items-center gap-2"
+                        >
+                          <Terminal size={14} /> Get SSH Server Source
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 text-xs">2</span>
-                    SSH Server Source
-                  </h4>
-                  <p className="text-sm text-gray-600 mb-4">GitHub Pages is static. To enable real SSH access, deploy the Node server on a VPS.</p>
-                  <a href="https://github.com/harshsri2208/harshsri2208.github.io/blob/main/ssh-server.ts" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors">
-                    <Terminal size={16} /> View Source Code
-                  </a>
+                {/* Live Preview */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold flex items-center gap-2 uppercase tracking-tighter">
+                    Live UI Preview
+                  </h3>
+                  <TerminalPreview />
                 </div>
               </div>
             </motion.div>
